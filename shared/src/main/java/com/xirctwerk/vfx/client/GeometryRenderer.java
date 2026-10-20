@@ -13,30 +13,34 @@ import java.util.*;
 
 /** Nichirin-derived two-resolution geometry pipeline, isolated from buffered sprite rendering. */
 final class GeometryRenderer {
-    private record Colored(Geometry.Quad quad,Color color) {}
+    private record Batch(Object owner,int material) {}
+    private static Object currentOwner;
+    private record Colored(Geometry.Quad quad,Color color,Object owner) {Colored(Geometry.Quad quad,Color color){this(quad,color,currentOwner);}}
     private static final Map<Integer,TextureTarget> targets=new HashMap<>();
     private static int count;
     private static final List<Colored> bloomGeometry=new ArrayList<>();
     static boolean hasBloom(){return !bloomGeometry.isEmpty();}
     static void render(PoseStack pose,Camera camera) {
         Minecraft mc=Minecraft.getInstance();if(mc.level==null) {release();return;}
-        Map<Integer,List<Colored>> groups=new TreeMap<>();count=0;bloomGeometry.clear();
+        Map<Batch,List<Colored>> groups=new LinkedHashMap<>();count=0;bloomGeometry.clear();
         for(var playback:VfxClient.INSTANCE.playbacks()) for(var p:playback.simulation().particles()) if(Geometry.supports(p.emitter.kind())) {
+            currentOwner=playback;long generated=System.nanoTime();
             var point=p.interpolated(VfxClient.INSTANCE.renderPartial(playback));var origin=p.emitter.space().equals("local")?point.add(playback.anchor().get()):point;
-            for(var q:Geometry.create(p,origin)) add(groups,p.emitter.pixelSize(),q,p.color(),p.emitter.blend().equals("additive"),p.emitter.bloom());
+            for(var q:Geometry.create(p,origin)) add(groups,p.emitter.pixelSize(),q,playback.color(p.color()),p.emitter.blend().equals("additive"),p.emitter.bloom());
+            VfxPerformance.record(playback,0,0,System.nanoTime()-generated);
         }
         float partial=mc.getTimer().getGameTimeDeltaPartialTick(true);
         for(var instance:Vfx.instances()) if(instance.alive()) {
-            try {instance.visual.render(instance.frame(partial),(q,c)->add(groups,instance.style.pixelSize(),q,c,false,instance.style.bloom()));}
+            try {currentOwner=instance;long generated=System.nanoTime();instance.render(partial,(q,c)->add(groups,instance.style.pixelSize(),q,c,false,instance.style.bloom()));VfxPerformance.record(instance,0,0,System.nanoTime()-generated);}
             catch(RuntimeException error) {instance.stop();org.slf4j.LoggerFactory.getLogger("XircVfx").error("Stopped failing code visual",error);}
         }
-        for(var trail:RibbonTrail.trails()) try {trail.render((q,c)->add(groups,1,q,c));} catch(RuntimeException error) {trail.close();org.slf4j.LoggerFactory.getLogger("XircVfx").error("Closed failing or over-budget trail",error); }
+        for(var trail:RibbonTrail.trails()) try {currentOwner=trail;long generated=System.nanoTime();trail.render((q,c)->add(groups,1,q,c));VfxPerformance.record(trail,0,0,System.nanoTime()-generated);} catch(RuntimeException error) {trail.close();org.slf4j.LoggerFactory.getLogger("XircVfx").error("Closed failing or over-budget trail",error); }
         if(groups.isEmpty()) return;
         var main=mc.getMainRenderTarget();var oldShader=RenderSystem.getShader();
         boolean blend=GL11.glIsEnabled(GL11.GL_BLEND),depth=GL11.glIsEnabled(GL11.GL_DEPTH_TEST),cull=GL11.glIsEnabled(GL11.GL_CULL_FACE),mask=GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
         try {
             for(var entry:groups.entrySet()) {
-                int pixel=entry.getKey()/2;boolean additive=(entry.getKey()&1)!=0;
+                int pixel=entry.getKey().material()/2;boolean additive=(entry.getKey().material()&1)!=0;long started=System.nanoTime();
                 TextureTarget target=null;
                 if(pixel>1) {
                     int width=Math.max(1,(main.width+pixel-1)/pixel),height=Math.max(1,(main.height+pixel-1)/pixel);
@@ -46,6 +50,7 @@ final class GeometryRenderer {
                     target.setFilterMode(GL11.GL_NEAREST);target.setClearColor(0,0,0,0);target.clear(Minecraft.ON_OSX);target.copyDepthFrom(main);target.bindWrite(true);
                 } else main.bindWrite(true);
                 draw(pose,camera,entry.getValue(),pixel>1,additive);
+                VfxPerformance.record(entry.getKey().owner(),entry.getValue().size(),1,System.nanoTime()-started);
                 if(pixel>1) {main.bindWrite(true);RenderSystem.enableBlend();RenderSystem.defaultBlendFunc();target.blitToScreen(main.viewWidth,main.viewHeight,false);}
             }
         } finally {
@@ -55,14 +60,14 @@ final class GeometryRenderer {
             if(cull) RenderSystem.enableCull();else RenderSystem.disableCull();
         }
     }
-    private static void add(Map<Integer,List<Colored>> groups,int pixel,Geometry.Quad q,Color color) {add(groups,pixel,q,color,false);}
-    private static void add(Map<Integer,List<Colored>> groups,int pixel,Geometry.Quad q,Color color,boolean additive) {add(groups,pixel,q,color,additive,0);}
-    private static void add(Map<Integer,List<Colored>> groups,int pixel,Geometry.Quad q,Color color,boolean additive,double bloom) {
-        if(count>=65536) throw new IllegalStateException("Frame geometry exceeds 65536 quads");
+    private static void add(Map<Batch,List<Colored>> groups,int pixel,Geometry.Quad q,Color color) {add(groups,pixel,q,color,false);}
+    private static void add(Map<Batch,List<Colored>> groups,int pixel,Geometry.Quad q,Color color,boolean additive) {add(groups,pixel,q,color,additive,0);}
+    private static void add(Map<Batch,List<Colored>> groups,int pixel,Geometry.Quad q,Color color,boolean additive,double bloom) {
+        if(count>=Math.min(65536,VfxPerformance.limits().quads()*2)) throw new IllegalStateException("Frame geometry exceeds 65536 quads");
         for(Vec v:List.of(q.a(),q.b(),q.c(),q.d())) if(!Double.isFinite(v.x())||!Double.isFinite(v.y())||!Double.isFinite(v.z())) throw new IllegalArgumentException("Mesh vertices must be finite");
         for(double c:new double[]{color.r(),color.g(),color.b(),color.a()}) if(!Double.isFinite(c)||c<0||c>1) throw new IllegalArgumentException("Mesh color channels must be 0..1");
         if(bloom>0)bloomGeometry.add(new Colored(q,new Color(color.r()*bloom/4,color.g()*bloom/4,color.b()*bloom/4,color.a())));
-        count++;groups.computeIfAbsent(pixel*2+(additive?1:0),k->new ArrayList<>()).add(new Colored(q,color));
+        count++;groups.computeIfAbsent(new Batch(currentOwner,pixel*2+(additive?1:0)),k->new ArrayList<>()).add(new Colored(q,color));
     }
     private static void draw(PoseStack pose,Camera camera,List<Colored> quads,boolean snap,boolean additive) {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);RenderSystem.enableBlend();if(additive)RenderSystem.blendFunc(GL11.GL_SRC_ALPHA,GL11.GL_ONE);else RenderSystem.defaultBlendFunc();RenderSystem.enableDepthTest();RenderSystem.depthMask(false);RenderSystem.disableCull();
@@ -75,7 +80,10 @@ final class GeometryRenderer {
         }
         BufferUploader.drawWithShader(buffer.buildOrThrow());
     }
-    static void renderBloom(PoseStack pose,Camera camera) {if(!bloomGeometry.isEmpty())draw(pose,camera,bloomGeometry,false,false);}
+    static void renderBloom(PoseStack pose,Camera camera) {
+        var owners=new LinkedHashMap<Object,List<Colored>>();for(var item:bloomGeometry)owners.computeIfAbsent(item.owner(),k->new ArrayList<>()).add(item);
+        for(var entry:owners.entrySet()){long started=System.nanoTime();draw(pose,camera,entry.getValue(),false,false);VfxPerformance.record(entry.getKey(),entry.getValue().size(),1,System.nanoTime()-started);}
+    }
     private static double distance(Geometry.Quad q,double x,double y,double z) {Vec v=q.a().add(q.b()).add(q.c()).add(q.d()).scale(.25);return Math.pow(v.x()-x,2)+Math.pow(v.y()-y,2)+Math.pow(v.z()-z,2);}
     static void release() {targets.values().forEach(TextureTarget::destroyBuffers);targets.clear();bloomGeometry.clear();}
 }

@@ -11,3 +11,5 @@
 *.log
 local.properties
 **/run-packaged-smoke/
+
+**/run-server-smoke/

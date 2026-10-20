@@ -1,7 +1,7 @@
 plugins { id 'base' }
 allprojects {
     group = 'com.xirctwerk.vfx'
-    version = '0.1.0'
+    version = '0.2.0'
     repositories { mavenCentral() }
 }
 subprojects {
@@ -28,3 +28,26 @@ subprojects {
     tasks.named('jar') { from(rootProject.file('LICENSE')); from(rootProject.file('THIRD_PARTY_NOTICES.md')) }
     tasks.named('sourcesJar') { from(rootProject.file('LICENSE')); from(rootProject.file('THIRD_PARTY_NOTICES.md')) }
 }
+
+// Standard Maven layout, POM dependencies, source jars and Gradle variant metadata.
+subprojects {
+    apply plugin: 'maven-publish'
+    publishing {
+        publications {
+            vfx(MavenPublication) {
+                from components.java
+                artifactId = "xirc_vfx-${project.name}"
+                pom {
+                    name = "Xirc's VFX (${project.name})"
+                    description = "Minecraft 1.21.1 visual effects library by XircTwerk"
+                    url = 'https://github.com/XircTwerk/xirc_vfx'
+                    licenses { license { name = 'MIT'; url = 'https://opensource.org/license/mit' } }
+                    developers { developer { id = 'XircTwerk'; name = 'XircTwerk' } }
+                    scm { url = 'https://github.com/XircTwerk/xirc_vfx'; connection = 'scm:git:https://github.com/XircTwerk/xirc_vfx.git' }
+                }
+            }
+        }
+        repositories { maven { name = 'Staging'; url = rootProject.layout.buildDirectory.dir('maven') } }
+    }
+}
+tasks.register('stageMaven') { dependsOn subprojects.collect { it.tasks.named('publishVfxPublicationToStagingRepository') } }

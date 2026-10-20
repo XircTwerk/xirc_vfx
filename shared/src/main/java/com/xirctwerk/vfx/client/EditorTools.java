@@ -23,6 +23,7 @@ final class EditorTools {
     private final Set<String> variations=new LinkedHashSet<>(List.of("size","speed")),bookmarks=new LinkedHashSet<>();
     private final float[] add={0},multiply={1},translate={0,0,0},shift={0},stretch={1},variation={.15f};
     private final ImInt seed=new ImInt(42);
+    private final ImInt maxInstances=new ImInt(16),maxParticles=new ImInt(8192),maxQuads=new ImInt(32768);
     private final ImInt particleWarning=new ImInt(4096),geometryWarning=new ImInt(32768);
     private JsonObject clipboard,a,b;
     private List<String> clips=List.of(),checkpoints=List.of();
@@ -111,6 +112,18 @@ final class EditorTools {
     }
     private void diagnostics(Frame f){
         diagnosticFrames++;
+        ImGui.separator();ImGui.text("World playback budgets");
+        ImGui.sliderInt("Maximum instances",maxInstances.getData(),1,16);EditorHints.limits(1,16);
+        ImGui.sliderInt("Maximum live particles",maxParticles.getData(),1,8192);EditorHints.limits(1,8192);
+        ImGui.sliderInt("Maximum estimated quads",maxQuads.getData(),1,32768);EditorHints.limits(1,32768);
+        if(EditorHints.button("Apply playback budgets"))attempt(()->com.xirctwerk.vfx.api.VfxPerformance.configure(new com.xirctwerk.vfx.api.VfxPerformance.Limits(maxInstances.get(),maxParticles.get(),maxQuads.get())));
+        EditorHints.tip("Applies session limits and stops current world playbacks. Definitions retain their authored values.");
+        ImGui.text("World renderer: per-effect CPU cost and actual submitted draw batches");
+        ImGui.textWrapped("Network: "+VfxNetworkClient.accepted()+" accepted / "+VfxNetworkClient.rejected()+" skipped. "+VfxNetworkClient.lastRejection());
+        for(var row:com.xirctwerk.vfx.api.VfxPerformance.snapshot())ImGui.textWrapped(String.format(java.util.Locale.ROOT,"%s | %d particles | %d quads | %d draws | tick %.1f us | render %.1f us",row.effect(),row.particles(),row.quads(),row.drawCalls(),row.simulationMicros(),row.renderCpuMicros()));
+        ImGui.textWrapped("Quads/draws include repeated bloom submissions. CPU submission times exclude GPU execution and deferred driver work.");
+        ImGui.separator();
+
         ImGui.sliderInt("Particle warning threshold",particleWarning.getData(),1,Simulation.MAX_PARTICLES);EditorHints.limits(1,Simulation.MAX_PARTICLES);
         ImGui.sliderInt("Geometry warning threshold",geometryWarning.getData(),1,65536);EditorHints.limits(1,65536);
         EditorHints.tip("Session advisory thresholds; validation and runtime hard budgets remain unchanged.");

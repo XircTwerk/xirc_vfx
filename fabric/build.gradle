@@ -6,7 +6,7 @@ loom {
             programArgs '--username', 'XircTwerk'
             if (project.hasProperty('xircSmokeTest')) { vmArg '-Dxirc.smokeTest=true'; runDir 'run-smoke' }
         }
-        server { if (project.hasProperty('xircServerSmokeTest')) programArg '--initSettings' }
+        server { if (project.hasProperty('xircServerSmokeTest')) { programArg '--initSettings'; vmArg '-Dxirc.serverSmoke=true'; runDir 'run-server-smoke' } }
     }
 }
 dependencies {
@@ -34,6 +34,7 @@ tasks.matching { it.name == 'runClient' }.configureEach {
     doLast {
         if (project.hasProperty('xircSmokeTest')) {
             def log = file('run-smoke/logs/latest.log').text
+            if (!log.contains('XIRC_SMOKE_LIBRARY_API_PASSED') || !log.contains('XIRC_SMOKE_NETWORK_PASSED')) throw new GradleException('Library API/network runtime smoke check failed')
             if (!log.contains('XIRC_SMOKE_TRANSFORMS_PASSED')) throw new GradleException('Transform hierarchy smoke check failed')
             if (!log.contains('XIRC_SMOKE_MOTION_PASSED')) throw new GradleException('Motion authoring smoke check failed')
             if (!log.contains('XIRC_SMOKE_PARAMETERS_PASSED')) throw new GradleException('Parameter controls smoke check failed')
@@ -48,4 +49,8 @@ tasks.matching { it.name == 'runClient' }.configureEach {
             if (!log.contains('XIRC_SMOKE_JSON_SAVE_PASSED') || !log.contains('XIRC_SMOKE_BURST_EDITOR_PASSED') || !log.contains('XIRC_SMOKE_PROPERTY_EDITOR_PASSED') || !log.contains('XIRC_SMOKE_IMGUI_PASSED') || !log.contains('XIRC_SMOKE_COMPLETE') || !log.contains('XIRC_SMOKE_COMMANDS_AND_PACKAGE_PASSED') || !log.contains('XIRC_SMOKE_GEOMETRY_RENDERED') || !log.contains('XIRC_SMOKE_EDITOR_INPUT_PASSED') || !log.contains('XIRC_SMOKE_WORLD_PREVIEW_PASSED') || log.contains('XIRC_SMOKE_FAILED')) throw new GradleException('Studio runtime smoke check failed; inspect run/logs/latest.log')
         }
     }
+}
+
+if (project.hasProperty('xircServerSmokeTest')) tasks.named('runServer') {
+    doLast { if(!file('run-server-smoke/logs/latest.log').text.contains('XIRC_SMOKE_COMMON_INITIALIZED')) throw new GradleException('Dedicated server common initialization did not execute') }
 }

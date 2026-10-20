@@ -8,10 +8,13 @@
     "XircTwerk"
   ],
   "license": "MIT",
-  "environment": "client",
+  "environment": "*",
   "entrypoints": {
     "client": [
       "com.xirctwerk.vfx.fabric.XircFabric"
+    ],
+    "main": [
+      "com.xirctwerk.vfx.fabric.XircCommon"
     ]
   },
   "depends": {

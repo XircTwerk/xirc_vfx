@@ -12,7 +12,8 @@ neoForge {
     version = project.neo_version
     runs {
         client { client(); programArguments.addAll '--username', 'XircTwerk'; if (project.hasProperty('xircSmokeTest')) { systemProperty 'xirc.smokeTest', 'true'; gameDirectory = file(project.hasProperty('xircPackagedSmokeTest') ? 'run-packaged-smoke' : 'run-smoke') } }
-        server { server(); programArgument '--nogui'; if (project.hasProperty('xircServerSmokeTest')) programArgument '--initSettings' }
+        serverSmoke { type='gameTestServer'; gameDirectory=file('run-server-smoke'); systemProperty 'xirc.serverSmoke', 'true'; systemProperty 'neoforge.enabledGameTestNamespaces', 'xirc_vfx' }
+        server { server(); programArgument '--nogui'; if (project.hasProperty('xircServerSmokeTest')) { programArgument '--initSettings'; systemProperty 'xirc.serverSmoke', 'true'; gameDirectory=file('run-server-smoke') } }
     }
     if (!project.hasProperty('xircPackagedSmokeTest')) { mods { xirc_vfx { sourceSet sourceSets.main } } }
 }
@@ -31,6 +32,7 @@ tasks.matching { it.name == 'runClient' }.configureEach {
     doLast {
         if (project.hasProperty('xircSmokeTest')) {
             def log = file(project.hasProperty('xircPackagedSmokeTest') ? 'run-packaged-smoke/logs/latest.log' : 'run-smoke/logs/latest.log').text
+            if (!log.contains('XIRC_SMOKE_LIBRARY_API_PASSED') || !log.contains('XIRC_SMOKE_NETWORK_PASSED')) throw new GradleException('Library API/network runtime smoke check failed')
             if (!log.contains('XIRC_SMOKE_TRANSFORMS_PASSED')) throw new GradleException('Transform hierarchy smoke check failed')
             if (!log.contains('XIRC_SMOKE_MOTION_PASSED')) throw new GradleException('Motion authoring smoke check failed')
             if (!log.contains('XIRC_SMOKE_PARAMETERS_PASSED')) throw new GradleException('Parameter controls smoke check failed')
@@ -51,6 +53,18 @@ tasks.matching { it.name == 'runClient' }.configureEach {
 if (project.hasProperty('xircPackagedSmokeTest')) {
     tasks.named('runClient') {
         dependsOn tasks.named('jar')
-        doFirst { copy { from tasks.named('jar').get().archiveFile; into file('run-packaged-smoke/mods') } }
+        doFirst { def mods=file('run-packaged-smoke/mods'); delete fileTree(mods) { include 'xirc_vfx-neoforge-*.jar' }; copy { from tasks.named('jar').get().archiveFile; into mods } }
     }
+}
+
+if (project.hasProperty('xircServerSmokeTest')) tasks.named('runServer') {
+    dependsOn tasks.named('jar')
+    doFirst { if(project.hasProperty('xircPackagedSmokeTest')) { def mods=file('run-server-smoke/mods'); delete fileTree(mods) { include 'xirc_vfx-neoforge-*.jar' }; copy { from tasks.named('jar').get().archiveFile; into mods } } }
+    doLast { if(!file('run-server-smoke/logs/latest.log').text.contains("Xirc's VFX")) throw new GradleException('Dedicated server did not discover the library') }
+}
+
+tasks.named('runServerSmoke') {
+    dependsOn tasks.named('jar')
+    doFirst { if(project.hasProperty('xircPackagedSmokeTest')) { def mods=file('run-server-smoke/mods'); delete fileTree(mods) { include 'xirc_vfx-neoforge-*.jar' }; copy { from tasks.named('jar').get().archiveFile; into mods } } }
+    doLast { if(!file('run-server-smoke/logs/latest.log').text.contains('XIRC_SMOKE_DEDICATED_API_PASSED')) throw new GradleException('Dedicated server API test failed') }
 }

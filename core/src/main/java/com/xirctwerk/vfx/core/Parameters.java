@@ -40,6 +40,17 @@ public final class Parameters {
         }
         return result;
     }
+    /** Validated per-playback overrides. Does not mutate the source document. */
+    public static JsonObject override(JsonObject authored,Map<String,Double> values){
+        if(values==null||values.size()>32)throw new IllegalArgumentException("Use at most 32 parameter overrides");
+        var copy=authored.deepCopy();var remaining=new HashSet<>(values.keySet());
+        if(copy.has("parameters"))for(var item:copy.getAsJsonArray("parameters")){
+            var p=item.getAsJsonObject();String name=p.get("name").getAsString();
+            if(values.containsKey(name)){Double value=values.get(name);if(value==null||!Double.isFinite(value))throw new IllegalArgumentException("Parameter must be finite: "+name);p.addProperty("value",value);remaining.remove(name);}
+        }
+        if(!remaining.isEmpty())throw new IllegalArgumentException("Unknown parameters: "+remaining+". Expose them in the effect's parameters array first.");
+        EffectCodec.compile(copy);return copy;
+    }
     public static void expose(JsonObject json,Set<String> selected,String name,String field){
         if(selected.isEmpty())throw new IllegalArgumentException("Select layers first.");var bounds=bounds(field);var p=new JsonObject();p.addProperty("name",name);p.addProperty("label",name);p.addProperty("min",bounds.min());p.addProperty("max",bounds.max());
         var first=Authoring.layer(json,selected.iterator().next());var value=first.get(field);if(value!=null&&!value.isJsonPrimitive())throw new IllegalArgumentException("Expose a scalar field; curves and ranges stay authored separately.");

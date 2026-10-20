@@ -6,36 +6,25 @@ The library owns the JSON engine, deterministic simulation, transform hierarchy,
 
 ## Install
 
-Use the matching `xirc_vfx-fabric-0.1.0.jar` or `xirc_vfx-neoforge-0.1.0.jar` from [Releases](https://github.com/XircTwerk/xirc_vfx/releases). Fabric also needs Fabric API. The library registers rendering/ticking once. It does not take the V key; a host mod can open the optional editor explicitly. `/xvfx` supplies local authoring/playback commands.
+Use the matching `xirc_vfx-fabric-0.2.0.jar` or `xirc_vfx-neoforge-0.2.0.jar` from [Releases](https://github.com/XircTwerk/xirc_vfx/releases). Fabric also needs Fabric API. The library registers rendering/ticking once. It does not take the V key; a host mod can open the optional editor explicitly. `/xvfx` supplies local authoring/playback commands.
 
 ## Gradle dependency
 
-The public release assets form a version-pinned Ivy repository (no GitHub token required):
+Standard Maven artifacts include POM dependencies, source jars and Gradle module metadata (public, no token):
 
 ```groovy
 repositories {
-    ivy {
-        url = 'https://github.com/XircTwerk/xirc_vfx/releases/download'
-        patternLayout { artifact '[revision]/[artifact]-[revision](-[classifier]).[ext]' }
-        metadataSources { artifact() }
-        content { includeGroup 'com.xirctwerk.vfx' }
-    }
+    maven { url = 'https://raw.githubusercontent.com/XircTwerk/xirc_vfx/maven' }
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net/' } // Fabric consumers
 }
-// Fabric Loom: compile against the mapped API.
-dependencies { modCompileOnly 'com.xirctwerk.vfx:xirc_vfx-fabric:0.1.0' }
-// NeoForge: compileOnly 'com.xirctwerk.vfx:xirc_vfx-neoforge:0.1.0'
-// Stage the complete matching release mod for development runtime loading:
-configurations { vfxRuntime }
-dependencies { vfxRuntime 'com.xirctwerk.vfx:xirc_vfx-fabric:0.1.0' }
-tasks.named('runClient') {
-    doFirst { copy { from configurations.vfxRuntime; into file('run/mods') } }
-}
-// Use the neoforge artifact and your configured game directory on NeoForge.
-// Pure Java tools: implementation 'com.xirctwerk.vfx:xirc_vfx-core:0.1.0'
-// The pure core also requires com.google.code.gson:gson:2.10.1.
+// Fabric Loom:
+dependencies { modImplementation 'com.xirctwerk.vfx:xirc_vfx-fabric:0.2.0' }
+// NeoForge: implementation 'com.xirctwerk.vfx:xirc_vfx-neoforge:0.2.0'
+// Pure Java: implementation 'com.xirctwerk.vfx:xirc_vfx-core:0.2.0'
 ```
 
-Declare `xirc_vfx >=0.1.0` as a required client dependency in your loader metadata. The loader artifact includes the engine and optional editor plus nested UI runtime dependencies; the pure core jar has no Minecraft/UI dependency. Artifact-only Ivy metadata does not infer transitive dependencies for the standalone pure core. Loading the complete loader jar from the run directory also ensures its nested ImGui libraries are discovered in development; a mapped compile dependency alone does not do that. Replace an older library jar when upgrading.
+Declare `xirc_vfx >=0.2.0` as a loader dependency. Loader jars contain the engine, optional editor and nested UI runtime; pure core automatically resolves Gson. Do not install the core jar beside a loader jar. See [API and compatibility policy](docs/LIBRARY_API.md) for full host setup and 0.x version guarantees.
 
 ## Client API
 
@@ -50,14 +39,18 @@ com.xirctwerk.vfx.client.VfxClient.INSTANCE.play(project,
 com.xirctwerk.vfx.client.VfxClient.INSTANCE.open();
 ```
 
-Trusted Java callbacks and endpoint trails use `com.xirctwerk.vfx.api.Vfx` and `RibbonTrail`; see [Code API](docs/CODE_API.md). JSON remains canonical; [format](docs/JSON_FORMAT.md), [schema](schema/effect.schema.json), [capabilities](docs/CAPABILITIES.md), [Photon conversion](docs/PHOTON_IMPORT.md). This is client-side; no multiplayer synchronization is claimed.
+Handles control position, rotation, scale, tint, pause, fade and stop. JSON handles also expose authored named numeric parameters. `Attachments` follows entities with explicit target-loss cleanup. `VfxServer` optionally broadcasts registered JSON effects to supported clients; received definitions and resources are checked before playback.
+
+The four **integration demos are part of this library**, available through Help > Built-in integration examples or `/xvfx demo`. No separate example mod is required. Tools > Diagnostics and `/xvfx profile` show per-effect CPU cost, draw submissions and configurable budgets. [Integration guide](docs/LIBRARY_API.md).
+
+Trusted Java callbacks and endpoint trails use `com.xirctwerk.vfx.api.Vfx` and `RibbonTrail`; see [Code API](docs/CODE_API.md). JSON remains canonical; [format](docs/JSON_FORMAT.md), [schema](schema/effect.schema.json), [capabilities](docs/CAPABILITIES.md), [Photon conversion](docs/PHOTON_IMPORT.md). Code visuals and trails remain client-side; registered JSON effects support optional server-triggered playback.
 
 Existing `xirc_vfx_studio:` effect/texture identifiers remain valid for compatibility. New effects may use your own namespace. A host can call `useProjectDirectory(Path)` before opening the editor to retain its existing projects; default library storage is `config/xirc_vfx`. `setEditorTitle(String)` supplies an application's display name.
 
 ## Build
 
 ```powershell
-.\gradlew.bat :core:test build
+.\gradlew.bat :core:test build stageRelease stageMaven
 ```
 
 On Linux use `bash gradlew`. Both loader jars and source jars are built from the shared implementation. Core semantic/schema/security tests run without Minecraft. The opt-in `-PxircSmokeTest -PxircPackagedSmokeTest` runtime harness exercises the optional editor, world renderer, transforms, bloom, imports and cloud composition on an actual client.

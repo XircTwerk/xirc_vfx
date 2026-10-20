@@ -30,6 +30,10 @@ public final class StudioCommands {
         root.then(StudioCommands.<S>lit("attach").then(StudioCommands.<S>name().then(StudioCommands.<S,Integer>arg("entity_id",IntegerArgumentType.integer(0)).executes(execute(feedback,c->studio.attach(StringArgumentType.getString(c,"name"),IntegerArgumentType.getInteger(c,"entity_id")))))));
         root.then(StudioCommands.<S>lit("block").then(StudioCommands.<S>name().then(StudioCommands.<S,Integer>arg("x",IntegerArgumentType.integer(-30000000,30000000)).then(StudioCommands.<S,Integer>arg("y",IntegerArgumentType.integer(-2048,2048)).then(StudioCommands.<S,Integer>arg("z",IntegerArgumentType.integer(-30000000,30000000)).executes(execute(feedback,c->studio.block(StringArgumentType.getString(c,"name"),new BlockPos(IntegerArgumentType.getInteger(c,"x"),IntegerArgumentType.getInteger(c,"y"),IntegerArgumentType.getInteger(c,"z"))))))))));
         root.then(StudioCommands.<S>lit("import").then(StudioCommands.<S,String>arg("name",StringArgumentType.word()).executes(execute(feedback,c->{String name=StringArgumentType.getString(c,"name");studio.importPackage(name);feedback.accept(c.getSource(),Component.literal("Imported "+name+".xvfx"));}))));
+        var demos=StudioCommands.<S>lit("demo");
+        for(String example:com.xirctwerk.vfx.api.IntegrationExamples.NAMES)demos.then(StudioCommands.<S>lit(example).executes(execute(feedback,c->{com.xirctwerk.vfx.api.IntegrationExamples.start(example);feedback.accept(c.getSource(),Component.literal("Started built-in example: "+example));})));
+        demos.then(StudioCommands.<S>lit("stop").executes(execute(feedback,c->com.xirctwerk.vfx.api.IntegrationExamples.stop())));root.then(demos);
+        root.then(StudioCommands.<S>lit("profile").executes(execute(feedback,c->{for(var row:com.xirctwerk.vfx.api.VfxPerformance.snapshot())feedback.accept(c.getSource(),Component.literal(row.toString()));})));
         dispatcher.register(root);
     }
 }

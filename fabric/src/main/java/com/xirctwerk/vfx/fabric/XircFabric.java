@@ -12,6 +12,7 @@ import org.lwjgl.glfw.GLFW;
 
 public final class XircFabric implements ClientModInitializer {
     @Override public void onInitializeClient() {
+        net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(com.xirctwerk.vfx.network.VfxPayload.TYPE,(payload,context)->context.client().execute(()->VfxNetworkClient.receive(payload.message())));
         var studio=VfxClient.INSTANCE;studio.initialize(FabricLoader.getInstance().getGameDir());
         ClientTickEvents.END_CLIENT_TICK.register(mc->studio.tick());
         ClientCommandRegistrationCallback.EVENT.register((dispatcher,access)->StudioCommands.register(dispatcher,(source,message)->source.sendFeedback(message)));

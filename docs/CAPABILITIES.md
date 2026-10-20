@@ -11,7 +11,7 @@
 | Minecraft 1.20.1 NeoForge | Assess applicability | No | No | No |
 | Newer Minecraft / loaders | Individually assess | No | No | No |
 
-Selected starting targets are Fabric Loader 0.19.5 + Fabric API 0.116.17+1.21.1 and NeoForge 21.1.256. Java 21. Official Mojang mappings on both. This is an independent client mod; no Photon version determines its runtime capabilities.
+Selected starting targets are Fabric Loader 0.19.5 + Fabric API 0.116.17+1.21.1 and NeoForge 21.1.256. Java 21. Official Mojang mappings on both. This is an independent library with a client renderer and optional common/server networking; no Photon version determines its runtime capabilities.
 
 ## Definition and runtime
 
@@ -41,7 +41,7 @@ Selected starting targets are Fabric Loader 0.19.5 + Fabric API 0.116.17+1.21.1 
 | Mesh assets / audio / sub-emitters | Not implemented; rejected unsupported fields |
 | Expressions / executable generated content | Not accepted |
 | Photon `.fx` import | Legacy emitter-list and FX version 1 compressed NBT → validated Studio JSON; explicit approximation review; no Photon export/runtime dependency |
-| Multiplayer synchronization | Not implemented; local-client visibility |
+| Multiplayer playback | Optional registered JSON ID/digest, deterministic seed, dimension/range delivery and server stop; client resource/parameter checks; no late-join replay or file transfer |
 
 ## Editor and authoring
 
@@ -80,3 +80,8 @@ Tools > Diagnostics provides session particle/geometry warning thresholds with a
 Tools > Preview > Compare selected contribution toggles a display wipe comparison: the complete visible composition on the left, selected layers on the right, sharing simulation and camera. It is an orthographic authoring comparison, not a world post-processing comparison.
 
 Tools > Transforms provides identity-parent grouping, static rotation/scale, and a separate seconds timeline for whole-layer position/rotation/scale animation with linear/spline position interpolation. Local particles follow the hierarchy; world particles retain birth transforms. Prismatic Orrery demonstrates nested animated transforms. Nonuniform scale and world transform gizmos remain unsupported. Transformed framing is conservative; it is not a culling optimizer.
+
+
+## Library integration in 0.2
+
+Public Maven artifacts with dependency metadata; client JSON/code handles (move/rotate/scale/tint/pause/fade/stop), explicit entity target-loss policies, validated numeric parameter overrides, built-in opt-in integration demos and per-owner renderer CPU/submission diagnostics with session budgets. See [Library API](LIBRARY_API.md). Code callbacks/trails remain local. The server API contains no Minecraft client references. GPU timing is not implemented.

@@ -48,7 +48,10 @@ public final class Simulation {
     private Set<String> muted=Set.of();
     public Set<String> muted() {return muted;}
     public void setMuted(Set<String> ids) {muted=Set.copyOf(ids);particles.removeIf(p->muted.contains(p.emitter.id()));muted.forEach(carry::remove);}
-    public Simulation(Effect effect) { this.effect=effect; random=new Random(effect.seed()); }
+    public Simulation(Effect effect) { this(effect,effect.seed()); }
+    public Simulation(Effect effect,long seed) { this.effect=effect; random=new Random(seed); }
+    private Transforms.Pose instancePose=Transforms.Pose.IDENTITY;
+    public void setInstancePose(Transforms.Pose pose){instancePose=Objects.requireNonNull(pose);}
     public List<Particle> particles() { return Collections.unmodifiableList(particles); }
     public double time() { return time; }
     public int dropped() { return dropped; }
@@ -109,7 +112,7 @@ public final class Simulation {
     }
     private Map<String,Transforms.Pose> posesAt(double seconds){
         var sampled=Transforms.sample(effect,effect.loop()?seconds%effect.duration():seconds);
-        sampled.replaceAll((id,p)->new Transforms.Pose(p.position().add(effect.pivot().scale(-1)),p.x(),p.y(),p.z(),p.scale()));return sampled;
+        sampled.replaceAll((id,p)->instancePose.compose(new Transforms.Pose(p.position().add(effect.pivot().scale(-1)),p.x(),p.y(),p.z(),p.scale())));return sampled;
     }
     private void spawn(Emitter e,Vec anchor,double t) {
         if(particles.size()>=capacity) { dropped++; return; }

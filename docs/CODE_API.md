@@ -2,7 +2,7 @@
 
 In 0.6.0, `new Vfx.Style(color, pixelSize, bloom)` enables effect-only world bloom for trusted code geometry (strength 0–4). The two-argument constructor retains bloom disabled. Generated quads are reused for the bloom mask, so callbacks still execute once per rendered frame. The post pass restores framebuffer, shader and viewport state. Bloom supports the tested vanilla main framebuffer, not arbitrary shader-pack targets.
 
-The client API lives in `com.xirctwerk.vfx.api`. Install the matching Fabric or NeoForge Studio jar and compile your client integration against Studio's classes. The API is currently source-level, versioned with the mod; stable binary compatibility and a published Maven artifact are not promised yet. Call it on Minecraft's client thread, after joining a world.
+The API lives in `com.xirctwerk.vfx.api` in Xirc's VFX. Compile against the matching library loader artifact, independently of Studio; see [integration](LIBRARY_API.md) for Maven setup, handle controls, attachments, server triggers and built-in demos. Client calls require Minecraft's client thread and a joined world. `VfxServer` is safe on the dedicated server and requires its server thread. See the documented 0.x compatibility policy before upgrading.
 
 ## Slash and arbitrary procedural visuals
 
@@ -46,7 +46,7 @@ The animation adapter belongs to the calling mod; Studio has no AzureLib, player
 
 Code effects are capped at 256 instances and allocated trails at 256. A frame accepts at most 65536 geometry quads, with JSON world playbacks reserving at most 32768 estimated quads. An overflowing code visual is stopped; overflowing trails are closed and logged. Close trail handles when no longer used. World changes clear effects and close trails; framebuffer resources are released. These limits are engineering bounds, not performance benchmarks.
 
-The API is client-side. Server triggers and resource synchronization from Nichirin have not been ported. Your mod must deliver its own client event before invoking Studio; effects are not automatically visible to other players.
+`VfxServer` provides optional server-triggered JSON playback of identically registered definitions. There is no imported Nichirin networking, arbitrary remote JSON execution, automatic combat hook or effect/resource file transfer. Code callbacks and endpoint trails remain local; see [network scope](LIBRARY_API.md#multiplayer).
 
 ## In-game authoring
 

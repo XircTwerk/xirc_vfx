@@ -185,8 +185,9 @@ final class StudioSmokeTest {
                     try(var pixels=Screenshot.takeScreenshot(mc.getMainRenderTarget())){int color=pixels.getPixelRGBA(pixels.getWidth()/2,pixels.getHeight()/2);int r=color&255,g=(color>>>8)&255,b=(color>>>16)&255;if(r<180||b<180||g>60)throw new IllegalStateException("Foreground VFX/cloud composite failed in "+mode+": "+Integer.toHexString(color));}
                     capture("world-clouds-"+mode+".png");LOG.info("XIRC_SMOKE_CLOUD_{}_PASSED",mode.toUpperCase(java.util.Locale.ROOT));
                 }
-                if(ticks==180){LOG.info("XIRC_SMOKE_CLOUDS_PASSED");LOG.info("XIRC_SMOKE_COMPLETE");mc.stop();state=8;}
+                if(ticks==180){LOG.info("XIRC_SMOKE_CLOUDS_PASSED");state=9;ticks=0;}
             }
+            if(state==9&&LibrarySmokeTest.tick()){LOG.info("XIRC_SMOKE_COMPLETE");mc.stop();state=10;}
         } catch(Exception e) {if(mc.screen instanceof StudioScreen screen)screen.restoreSmokeClipboard();LOG.error("XIRC_SMOKE_FAILED",e);mc.stop();state=4;}
     }
     private static void cloudFixture(){
@@ -210,5 +211,5 @@ final class StudioSmokeTest {
         if(!studio.files.load("smoke_roundtrip").equals(json)) throw new IllegalStateException("Save/load mismatch.");
         studio.files.export("smoke_package",json,studio::resource);studio.importPackage("smoke_package");studio.checkResources(EffectCodec.compile(studio.files.load("smoke_package")));
     }
-    private static void capture(String file) {var mc=Minecraft.getInstance();Screenshot.grab(mc.gameDirectory,file,mc.getMainRenderTarget(),message->LOG.info("Screenshot {}: {}",file,message.getString()));}
+    static void capture(String file) {var mc=Minecraft.getInstance();Screenshot.grab(mc.gameDirectory,file,mc.getMainRenderTarget(),message->LOG.info("Screenshot {}: {}",file,message.getString()));}
 }

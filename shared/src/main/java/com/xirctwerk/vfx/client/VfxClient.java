@@ -21,8 +21,40 @@ public final class VfxClient {
     private final Map<String,ResourceLocation> importedTextures=new HashMap<>();
     private Object level;
     private StudioScreen editor;
-    public record Playback(Simulation simulation,Supplier<Effect.Vec> anchor,Supplier<Boolean> valid) {}
-    float renderPartial(Playback playback){return playback==editorPreview&&editorPaused.get()?1:Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);}
+    public static final class Playback implements com.xirctwerk.vfx.api.Vfx.Handle {
+        private Simulation simulation;
+        private final Supplier<Effect.Vec> source;
+        private final Supplier<Boolean> valid;
+        private final PlaybackControls controls=new PlaybackControls();
+        private com.google.gson.JsonObject authored;
+        private final Map<String,Double> overrides=new HashMap<>();
+        private long seed;
+        private long simulationNanos;
+        private Playback(Simulation simulation,Supplier<Effect.Vec> anchor,Supplier<Boolean> valid){this.simulation=simulation;this.source=anchor;this.valid=valid;this.seed=simulation.effect().seed();}
+        public Simulation simulation(){return simulation;}
+        public Supplier<Effect.Vec> anchor(){return ()->source.get().add(controls.offset());}
+        public Supplier<Boolean> valid(){return valid;}
+        public Effect.Color color(Effect.Color original){return controls.color(original);}
+        public long simulationNanos(){return simulationNanos;}
+        public boolean paused(){return controls.paused();}
+        public void stop(){com.xirctwerk.vfx.api.Vfx.checkThread();controls.stop();}
+        public boolean alive(){return controls.alive()&&valid.get()&&!simulation.finished();}
+        public Playback move(Effect.Vec position){com.xirctwerk.vfx.api.Vfx.checkThread();controls.move(position.add(source.get().scale(-1)));return this;}
+        public Playback rotate(Effect.Vec degrees){com.xirctwerk.vfx.api.Vfx.checkThread();controls.rotate(degrees);return this;}
+        public Playback scale(double value){com.xirctwerk.vfx.api.Vfx.checkThread();controls.scale(value);return this;}
+        public Playback tint(Effect.Color value){com.xirctwerk.vfx.api.Vfx.checkThread();controls.tint(value);return this;}
+        public Playback pause(boolean value){com.xirctwerk.vfx.api.Vfx.checkThread();controls.pause(value);return this;}
+        public Playback fadeOut(double seconds){com.xirctwerk.vfx.api.Vfx.checkThread();controls.fadeOut(seconds);return this;}
+        public Playback parameter(String name,double value){
+            com.xirctwerk.vfx.api.Vfx.checkThread();if(authored==null)throw new UnsupportedOperationException("This effect has no retained authored JSON");
+            var next=new HashMap<>(overrides);next.put(name,value);var definition=Parameters.override(authored,next);var effect=EffectCodec.compile(definition);
+            INSTANCE.checkBudget(effect,this);
+            try{INSTANCE.checkResources(effect);}catch(IOException e){throw new IllegalArgumentException(e.getMessage(),e);}
+            // Parameter edits restart only this instance so old sampled particles never mix definitions.
+            simulation=new Simulation(effect,seed);overrides.clear();overrides.putAll(next);return this;
+        }
+    }
+    float renderPartial(Playback playback){return playback.paused()||playback==editorPreview&&editorPaused.get()?1:Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);}
     private String editorTitle="Xirc's VFX";
     public String editorTitle(){return editorTitle;}
     public void setEditorTitle(String title){if(title==null||title.isBlank()||title.length()>128)throw new IllegalArgumentException("Editor title must contain 1..128 characters");editorTitle=title;}
@@ -102,14 +134,18 @@ public final class VfxClient {
     private void previewAt(Effect effect,StudioScreen owner,Supplier<Effect.Vec> anchor,Supplier<Boolean> paused) throws IOException {
         var mc=Minecraft.getInstance();if(mc.player==null||mc.level==null) throw new IOException("Join a world first.");
         checkResources(effect);
-        if(active.size()>=16||active.stream().mapToDouble(p->EffectCodec.estimatedParticles(p.simulation.effect())).sum()+EffectCodec.estimatedParticles(effect)>8192||active.stream().mapToDouble(p->EffectCodec.estimatedGeometry(p.simulation.effect())).sum()+EffectCodec.estimatedGeometry(effect)>32768) throw new IOException("World preview exceeds the playback budget. Stop other effects first.");
-        if(level!=mc.level) {active.clear();editorPreview=null;BloomRenderer.release();level=mc.level;}
+        try{checkBudget(effect,editorPreview);}catch(IllegalArgumentException error){throw new IOException(error.getMessage(),error);}
+        if(level!=mc.level) {active.forEach(p->p.controls.stop());active.clear();editorPreview=null;BloomRenderer.release();level=mc.level;}
         var player=mc.player;var world=mc.level;editorPaused=paused;
         if(editorPreview==null||!editorPreview.simulation().effect().equals(effect)) editorPreview=new Playback(new Simulation(effect),anchor,()->Minecraft.getInstance().screen==owner&&Minecraft.getInstance().level==world&&!player.isRemoved());
         else editorPreview=new Playback(editorPreview.simulation(),anchor,editorPreview.valid());
     }
-    public void play(String name,Effect.Vec position) throws IOException { start(EffectCodec.compile(files.load(name)),()->position,()->Minecraft.getInstance().level!=null); }
-    public void play(Project project,Effect.Vec position) throws IOException { start(project.effect(),()->position,()->Minecraft.getInstance().level!=null); }
+    public Playback play(String name,Effect.Vec position) throws IOException { return play(new Project(files.load(name)),position); }
+    public Playback play(Project project,Effect.Vec position) throws IOException {return play(project,position,project.effect().seed());}
+    public Playback play(Project project,Effect.Vec position,long seed) throws IOException {return play(project,()->position,()->Minecraft.getInstance().level!=null,seed);}
+    public Playback play(Project project,Supplier<Effect.Vec> anchor,Supplier<Boolean> valid,long seed) throws IOException {
+        com.xirctwerk.vfx.api.Vfx.checkThread();var playback=start(project.effect(),anchor,valid);playback.authored=project.json();playback.seed=seed;playback.simulation=new Simulation(project.effect(),seed);return playback;
+    }
     public void attach(String name,int id) throws IOException {
         var world=Minecraft.getInstance().level; if(world==null) throw new IOException("Join a world first."); Entity entity=world.getEntity(id);
         if(entity==null) throw new IOException("No loaded entity with ID "+id+". Use /xvfx me <name> for yourself.");
@@ -119,36 +155,42 @@ public final class VfxClient {
         var world=Minecraft.getInstance().level;if(world==null||world.getBlockState(pos).isAir()) throw new IOException("Choose a loaded, non-air block.");
         start(EffectCodec.compile(files.load(name)),()->new Effect.Vec(pos.getX()+.5,pos.getY()+1,pos.getZ()+.5),()->Minecraft.getInstance().level==world&&!world.getBlockState(pos).isAir());
     }
-    private void start(Effect effect,Supplier<Effect.Vec> anchor,Supplier<Boolean> valid) throws IOException {
+    private Playback start(Effect effect,Supplier<Effect.Vec> anchor,Supplier<Boolean> valid) throws IOException {
         if(Minecraft.getInstance().level==null) throw new IOException("Join a world first.");
-        if(active.size()+(editorPreview==null?0:1)>=16) throw new IOException("16 effects are already playing. Use /xvfx stop.");checkResources(effect);
+        if(active.size()+(editorPreview==null?0:1)>=com.xirctwerk.vfx.api.VfxPerformance.limits().instances()) throw new IOException("16 effects are already playing. Use /xvfx stop.");checkResources(effect);
         // A new world is captured at start so switching worlds never carries old instances over.
-        if(level!=Minecraft.getInstance().level) { active.clear();editorPreview=null; level=Minecraft.getInstance().level; }
-        double reserved=playbacks().stream().mapToDouble(p->EffectCodec.estimatedParticles(p.simulation.effect())).sum();
-        if(reserved+EffectCodec.estimatedParticles(effect)>Simulation.MAX_PARTICLES) throw new IOException("Combined effects exceed the 8192 particle budget. Stop effects or lower Amount/lifetime before playing this effect.");
-        if(playbacks().stream().mapToDouble(p->EffectCodec.estimatedGeometry(p.simulation.effect())).sum()+EffectCodec.estimatedGeometry(effect)>32768) throw new IOException("Combined mesh geometry exceeds the 32768 quad playback budget. Stop effects or reduce rate/lifetime.");
-        active.add(new Playback(new Simulation(effect),anchor,valid));
+        if(level!=Minecraft.getInstance().level) { active.forEach(p->p.controls.stop());active.clear();editorPreview=null; level=Minecraft.getInstance().level; }
+        try{checkBudget(effect,null);}catch(IllegalArgumentException error){throw new IOException(error.getMessage(),error);}
+        Playback playback=new Playback(new Simulation(effect),anchor,valid);active.add(playback);return playback;
     }
-    public void stop() { active.clear();editorPreview=null;com.xirctwerk.vfx.api.Vfx.clear(); }
+    private void checkBudget(Effect effect,Playback replacing){
+        var others=playbacks().stream().filter(p->p!=replacing).toList();var limits=com.xirctwerk.vfx.api.VfxPerformance.limits();
+        if(others.size()>=limits.instances()||others.stream().mapToDouble(p->EffectCodec.estimatedParticles(p.simulation.effect())).sum()+EffectCodec.estimatedParticles(effect)>limits.particles())throw new IllegalArgumentException("Playback exceeds configured instance/particle budget. Stop effects or lower emission/lifetime.");
+        if(others.stream().mapToDouble(p->EffectCodec.estimatedGeometry(p.simulation.effect())).sum()+EffectCodec.estimatedGeometry(effect)>limits.quads())throw new IllegalArgumentException("Playback exceeds configured geometry budget. Stop effects or reduce mesh emissions.");
+    }
+    public void stop() { com.xirctwerk.vfx.api.IntegrationExamples.stop();active.forEach(Playback::stop);active.clear();editorPreview=null;com.xirctwerk.vfx.api.Vfx.clear(); }
     public void tick() {
         StudioSmokeTest.tick();
         com.xirctwerk.vfx.api.Vfx.tick();
-        var mc=Minecraft.getInstance();if(mc.level!=level) { active.clear();editorPreview=null;GeometryRenderer.release();level=mc.level; }
+        VfxNetworkClient.tick();com.xirctwerk.vfx.api.IntegrationExamples.tick();
+        var mc=Minecraft.getInstance();if(mc.level!=level) { active.forEach(p->p.controls.stop());active.clear();editorPreview=null;GeometryRenderer.release();level=mc.level; }
         if(mc.level==null||mc.isPaused()) return;
-        int budget=Simulation.MAX_PARTICLES-(editorPreview==null?0:(int)Math.ceil(EffectCodec.estimatedParticles(editorPreview.simulation().effect())));
+        int budget=com.xirctwerk.vfx.api.VfxPerformance.limits().particles()-(editorPreview==null?0:(int)Math.ceil(EffectCodec.estimatedParticles(editorPreview.simulation().effect())));
         for(Iterator<Playback> it=active.iterator();it.hasNext();) {
-            Playback p=it.next();if(!p.valid.get()) { it.remove();continue; }
-            var anchor=p.anchor.get(); final var world=mc.level;
+            Playback p=it.next();if(!p.alive()) {p.controls.stop(); it.remove();continue; }
+            p.controls.tick();if(!p.controls.alive()){it.remove();continue;}if(p.controls.paused()){budget-=p.simulation.particles().size();p.simulationNanos=0;continue;}
+            p.simulation.setInstancePose(p.controls.pose());long started=System.nanoTime();
+            var anchor=p.anchor().get(); final var world=mc.level;
             p.simulation.tick(anchor,point->!world.getBlockState(BlockPos.containing(point.x(),point.y(),point.z())).getCollisionShape(world,BlockPos.containing(point.x(),point.y(),point.z())).isEmpty(),budget);
-            budget-=p.simulation.particles().size();if(p.simulation.finished()) it.remove();
+            p.simulationNanos=System.nanoTime()-started;budget-=p.simulation.particles().size();if(p.simulation.finished()) it.remove();
         }
-        tickEditorPreview(Simulation.MAX_PARTICLES-active.stream().mapToInt(p->p.simulation().particles().size()).sum());
+        tickEditorPreview(com.xirctwerk.vfx.api.VfxPerformance.limits().particles()-active.stream().mapToInt(p->p.simulation().particles().size()).sum());
     }
     /** Bounded replay for editor scrubbing; ordinary playback instances are untouched. */
     void advanceEditorPreview(double target,int maxTicks) {
         if(editorPreview==null||Minecraft.getInstance().level==null)return;
         var world=Minecraft.getInstance().level;
-        int budget=Simulation.MAX_PARTICLES-active.stream().mapToInt(p->p.simulation().particles().size()).sum();
+        int budget=com.xirctwerk.vfx.api.VfxPerformance.limits().particles()-active.stream().mapToInt(p->p.simulation().particles().size()).sum();
         for(int i=0;i<maxTicks&&editorPreview.simulation().time()+Simulation.DT/2<target;i++)
             editorPreview.simulation().tick(editorPreview.anchor().get(),point->!world.getBlockState(BlockPos.containing(point.x(),point.y(),point.z())).getCollisionShape(world,BlockPos.containing(point.x(),point.y(),point.z())).isEmpty(),budget);
     }

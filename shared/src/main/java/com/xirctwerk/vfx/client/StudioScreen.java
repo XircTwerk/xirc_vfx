@@ -383,7 +383,8 @@ public final class StudioScreen extends Screen {
                     ImGui.endMenu();
                 }
                 if(ImGui.beginMenu("Edit")) {if(ImGui.menuItem("Undo","Ctrl+Z")) history(false);if(ImGui.menuItem("Redo","Ctrl+Y")) history(true);ImGui.endMenu();}
-                if(ImGui.beginMenu("Help")) {if(ImGui.menuItem("Making effects"))guideOpen.set(true);ImGui.endMenu();}
+                if(ImGui.beginMenu("Help")) {if(ImGui.menuItem("Making effects"))guideOpen.set(true);
+                    if(ImGui.beginMenu("Built-in integration examples")){for(String name:com.xirctwerk.vfx.api.IntegrationExamples.NAMES)if(ImGui.menuItem(name.replace('_',' ')))attempt(()->com.xirctwerk.vfx.api.IntegrationExamples.start(name));if(ImGui.menuItem("Stop examples"))com.xirctwerk.vfx.api.IntegrationExamples.stop();ImGui.endMenu();}ImGui.endMenu();}
                 if(ImGui.beginMenu("View")) {if(ImGui.menuItem("Tools / command palette","Ctrl+P",tools.open.get()))tools.open.set(!tools.open.get());if(ImGui.menuItem("JSON editor",null,jsonOpen)) openJson();if(ImGui.menuItem("Timeline",null,timeline.open.get()))timeline.open.set(!timeline.open.get());if(ImGui.menuItem("Reset layout")) reset=true;if(ImGui.menuItem("Replay display",null,previewLoop)) previewLoop=!previewLoop;if(ImGui.menuItem("Wireframe meshes",null,wireframe))wireframe=!wireframe;if(ImGui.menuItem("Change display background")) background=(background+1)%3;ImGui.endMenu();}
                 ImGui.sameLine();ImGui.textDisabled(project.effect().name()+(savedJson==null||!savedJson.equals(project.json())?" *":""));ImGui.endMainMenuBar();
             }

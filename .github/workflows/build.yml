@@ -17,7 +17,7 @@ jobs:
           java-version: '21'
       - uses: gradle/actions/setup-gradle@v6.4.0
       - name: Build both loaders and run semantic/schema tests
-        run: bash gradlew --no-daemon build
+        run: bash gradlew --no-daemon :core:test build stageMaven
       - uses: actions/upload-artifact@v7.0.2
         with:
           name: xirc-vfx-1.21.1
@@ -25,5 +25,6 @@ jobs:
             fabric/build/libs/*.jar
             neoforge/build/libs/*.jar
             core/build/libs/*.jar
+            build/maven/**
             core/build/reports/tests/test/
           if-no-files-found: error
