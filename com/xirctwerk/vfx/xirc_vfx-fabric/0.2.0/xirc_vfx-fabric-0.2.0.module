@@ -1,0 +1,161 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.xirctwerk.vfx",
+    "module": "xirc_vfx-fabric",
+    "version": "0.2.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "xirc_vfx-fabric-0.2.0.jar",
+          "url": "xirc_vfx-fabric-0.2.0.jar",
+          "size": 8377396,
+          "sha512": "bad5d55f615c45b6bd2dd13f3b878c26c313fab204841b607ef3a947673519a28bcd8e35cd297e5561c1a5b2f58a8ee094338e0a338887675a4668b06f76379c",
+          "sha256": "ed9b5ca5f9e0d5d048209ead89eada20cea57027adca5a246f8b5280104b1b4e",
+          "sha1": "3d9a6bbbc06cac9cdd3a33f19e2a237cdce81142",
+          "md5": "0a58f0f8be7743bf0e33d38fe732d3a6"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "io.github.spair",
+          "module": "imgui-java-binding",
+          "version": {
+            "requires": "1.90.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "io.github.spair",
+          "module": "imgui-java-lwjgl3",
+          "version": {
+            "requires": "1.90.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "io.github.spair",
+          "module": "imgui-java-natives-windows",
+          "version": {
+            "requires": "1.90.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "io.github.spair",
+          "module": "imgui-java-natives-linux",
+          "version": {
+            "requires": "1.90.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "io.github.spair",
+          "module": "imgui-java-natives-macos",
+          "version": {
+            "requires": "1.90.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "net.fabricmc",
+          "module": "fabric-loader",
+          "version": {
+            "requires": "0.19.5"
+          }
+        },
+        {
+          "group": "net.fabricmc.fabric-api",
+          "module": "fabric-api",
+          "version": {
+            "requires": "0.116.17+1.21.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "xirc_vfx-fabric-0.2.0.jar",
+          "url": "xirc_vfx-fabric-0.2.0.jar",
+          "size": 8377396,
+          "sha512": "bad5d55f615c45b6bd2dd13f3b878c26c313fab204841b607ef3a947673519a28bcd8e35cd297e5561c1a5b2f58a8ee094338e0a338887675a4668b06f76379c",
+          "sha256": "ed9b5ca5f9e0d5d048209ead89eada20cea57027adca5a246f8b5280104b1b4e",
+          "sha1": "3d9a6bbbc06cac9cdd3a33f19e2a237cdce81142",
+          "md5": "0a58f0f8be7743bf0e33d38fe732d3a6"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "xirc_vfx-fabric-0.2.0-sources.jar",
+          "url": "xirc_vfx-fabric-0.2.0-sources.jar",
+          "size": 645833,
+          "sha512": "bb5f2d03d7a657868e565673bf867ce003e2ba001821b8bd24b87262910946261437437862247b64770d8f6a99d02cfc4c6f0f41fb84a46958a89c4287dc150f",
+          "sha256": "cee6297f3d48b9b75db028a953318a70245059727078f5c6f31bf004c1e58296",
+          "sha1": "b3ca657fa3670d28911a3d245047a4a472bb8b9a",
+          "md5": "726ca25d06d95e256449d33cbe610532"
+        }
+      ]
+    }
+  ]
+}

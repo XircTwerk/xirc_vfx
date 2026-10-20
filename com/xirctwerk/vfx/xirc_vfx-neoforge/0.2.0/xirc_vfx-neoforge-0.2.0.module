@@ -1,0 +1,147 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.xirctwerk.vfx",
+    "module": "xirc_vfx-neoforge",
+    "version": "0.2.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "xirc_vfx-neoforge-0.2.0.jar",
+          "url": "xirc_vfx-neoforge-0.2.0.jar",
+          "size": 8375358,
+          "sha512": "7b7f7bb9b694f231a08f2d33711e12a2661017156584801ffd9c24470af49ed8b1a6e31dce47943323288f28eea8180fd0c853fbb65e4b39b059bf38bd583d7e",
+          "sha256": "25f13e653b09f1616d36be916328d42cae7676f93b6b2995609f86e07d6fcedc",
+          "sha1": "e58ef645f7406530cce69fd89b77f38b8becedc7",
+          "md5": "3b4a9e9f78dda21d8cc6d6b7c99052bb"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "io.github.spair",
+          "module": "imgui-java-binding",
+          "version": {
+            "requires": "1.90.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "io.github.spair",
+          "module": "imgui-java-lwjgl3",
+          "version": {
+            "requires": "1.90.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "io.github.spair",
+          "module": "imgui-java-natives-windows",
+          "version": {
+            "requires": "1.90.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "io.github.spair",
+          "module": "imgui-java-natives-linux",
+          "version": {
+            "requires": "1.90.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "io.github.spair",
+          "module": "imgui-java-natives-macos",
+          "version": {
+            "requires": "1.90.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "xirc_vfx-neoforge-0.2.0.jar",
+          "url": "xirc_vfx-neoforge-0.2.0.jar",
+          "size": 8375358,
+          "sha512": "7b7f7bb9b694f231a08f2d33711e12a2661017156584801ffd9c24470af49ed8b1a6e31dce47943323288f28eea8180fd0c853fbb65e4b39b059bf38bd583d7e",
+          "sha256": "25f13e653b09f1616d36be916328d42cae7676f93b6b2995609f86e07d6fcedc",
+          "sha1": "e58ef645f7406530cce69fd89b77f38b8becedc7",
+          "md5": "3b4a9e9f78dda21d8cc6d6b7c99052bb"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "xirc_vfx-neoforge-0.2.0-sources.jar",
+          "url": "xirc_vfx-neoforge-0.2.0-sources.jar",
+          "size": 640097,
+          "sha512": "b01220d90827a8b50cdb4390e2736419ba4039a35af2d7e2bd85466767d42a5500f02196951a4fde86d3886f4ebc4a0a922a86a837179ea1c5ceabe1f1c0168c",
+          "sha256": "c60649b8504ce3423852b6f681196572797cd1e67bc1581a6c65733b6b899e60",
+          "sha1": "f0cff3d742ccde65460fe863909890aa985b7970",
+          "md5": "2ec7f2e16ecbfee728be2ea7593342c5"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.xirctwerk.vfx",
+    "module": "xirc_vfx-core",
+    "version": "0.2.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.10.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "xirc_vfx-core-0.2.0.jar",
+          "url": "xirc_vfx-core-0.2.0.jar",
+          "size": 148015,
+          "sha512": "0281b0a9db59e7de7be5adadd842e66b6024fc37bec96a20b32a24091abd99a463498da9dfa2fbf49f28d843d5f26218c426cb350c2d45e46e5a895946fc8d1e",
+          "sha256": "283a0cc57126049517f7aac19f25760e5e272ffca17115cab5477c0e70e017e6",
+          "sha1": "ca4066fe04878c1351c4c9520d6f11cf28336a3e",
+          "md5": "8d527567b107aeb24e2adaaa78683cf7"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.10.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "xirc_vfx-core-0.2.0.jar",
+          "url": "xirc_vfx-core-0.2.0.jar",
+          "size": 148015,
+          "sha512": "0281b0a9db59e7de7be5adadd842e66b6024fc37bec96a20b32a24091abd99a463498da9dfa2fbf49f28d843d5f26218c426cb350c2d45e46e5a895946fc8d1e",
+          "sha256": "283a0cc57126049517f7aac19f25760e5e272ffca17115cab5477c0e70e017e6",
+          "sha1": "ca4066fe04878c1351c4c9520d6f11cf28336a3e",
+          "md5": "8d527567b107aeb24e2adaaa78683cf7"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "xirc_vfx-core-0.2.0-sources.jar",
+          "url": "xirc_vfx-core-0.2.0-sources.jar",
+          "size": 55380,
+          "sha512": "e3d1fc9071d81cd15476cef5bc9b539da58af03e5490d94b25bdf962fa5a946af8d26fb329168df568ff168465b89ab2281fda01c20ce529aca2fa4bcf2e1bd8",
+          "sha256": "37eb7f82ec3fda75f986f38b7dd7d0239adb420b958707fb25a28adcefc4e5e4",
+          "sha1": "0950b6ac04041be6793437f89dc2f07c6329e132",
+          "md5": "12f1cc5ef617169df3da003614457433"
+        }
+      ]
+    }
+  ]
+}
