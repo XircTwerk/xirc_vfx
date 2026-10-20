@@ -23,3 +23,8 @@ tasks.register('stageRelease', Copy) {
     from(project(':neoforge').tasks.named('jar'))
     from(project(':neoforge').tasks.named('sourcesJar'))
 }
+
+subprojects {
+    tasks.named('jar') { from(rootProject.file('LICENSE')); from(rootProject.file('THIRD_PARTY_NOTICES.md')) }
+    tasks.named('sourcesJar') { from(rootProject.file('LICENSE')); from(rootProject.file('THIRD_PARTY_NOTICES.md')) }
+}

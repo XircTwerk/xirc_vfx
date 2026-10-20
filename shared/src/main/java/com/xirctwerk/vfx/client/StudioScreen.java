@@ -127,6 +127,7 @@ public final class StudioScreen extends Screen {
         else {if(!project.json().equals(nativeUi.photonImport.effect()))throw new IllegalStateException("Native Photon Open button did not apply the conversion");studio.files.save("smoke_photon",project.json());if(!studio.files.load("smoke_photon").equals(project.json()))throw new IllegalStateException("Photon JSON round-trip");}
     }
     void smokeWorkspace() {if(!nativeUi.ready||pw<50||ph<50) throw new IllegalStateException("Native workspace did not render");nativeUi.backend.withContext(()->{if(!ImGui.getIO().getFonts().isBuilt()||imgui.internal.ImGui.dockBuilderGetNode(nativeUi.dock).isNotValidPtr()) throw new IllegalStateException("Native font/dock initialization");});}
+    long smokeRenderedFrames(){return nativeUi.backend.completedFrames();}
     void smokeInteractions() {double x=px+pw*.5,y=py+ph*.5,oldYaw=yaw;mouseClicked(x,y,0);mouseDragged(x+20,y,0,20,0);mouseReleased(x,y,0);if(yaw>=oldYaw) throw new IllegalStateException("Orbit direction");double oldX=panX;mouseClicked(x,y,1);mouseDragged(x+14,y,1,14,9);mouseReleased(x,y,1);if(panX!=oldX+14) throw new IllegalStateException("Pan direction");var before=project.json();tint(0x33aaff);var a=before.getAsJsonArray("emitters").get(0).getAsJsonObject().getAsJsonObject("color").getAsJsonArray("gradient");var b=project.json().getAsJsonArray("emitters").get(0).getAsJsonObject().getAsJsonObject("color").getAsJsonArray("gradient");for(int i=0;i<a.size();i++) if(!a.get(i).getAsJsonObject().get("time").equals(b.get(i).getAsJsonObject().get("time"))||!a.get(i).getAsJsonObject().getAsJsonArray("color").get(3).equals(b.get(i).getAsJsonObject().getAsJsonArray("color").get(3))) throw new IllegalStateException("Gradient preservation");project.replace(before);resetView();changed();}
     private JsonObject timelineSmokeBefore,timelineSmokeAdded;
     void smokeTimeline(int stage) {
@@ -320,7 +321,7 @@ public final class StudioScreen extends Screen {
         if(studio.editorSimulation()!=null||studio.playbacks().size()!=count-1) throw new IllegalStateException("World preview cleanup failed");
         toggleWorldPreview();onClose();if(studio.editorSimulation()!=null) throw new IllegalStateException("Editor close left a preview running");
     }
-    private void copyAgentPrompt() {minecraft.keyboardHandler.setClipboard("Author an effect for Xirc's VFX Studio. Read AGENTS.md, schema/effect.schema.json and docs/AGENT_AUTHORING.md in "+studio.files.root()+". Preserve unrelated properties, curves, ranges and gradients. Write schemaVersion 1 JSON under effects and validate it. No executable shader/code imports. User request: ");message("Instructions copied for Codex or Claude Code.",false);}
+    private void copyAgentPrompt() {minecraft.keyboardHandler.setClipboard("Author an effect for "+studio.editorTitle()+". Read AGENTS.md, schema/effect.schema.json and docs/AGENT_AUTHORING.md in "+studio.files.root()+". Preserve unrelated properties, curves, ranges and gradients. Write schemaVersion 1 JSON under effects and validate it. No executable shader/code imports. User request: ");message("Instructions copied for Codex or Claude Code.",false);}
     private final class NativeWorkspace {
         final StudioImGui backend=StudioImGui.get();
         final PropertyEditor propertyEditor=new PropertyEditor();

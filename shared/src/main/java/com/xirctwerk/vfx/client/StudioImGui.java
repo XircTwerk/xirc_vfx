@@ -23,6 +23,8 @@ final class StudioImGui {
     private float testX, testY;
     private boolean testPointer, testDown;
     private boolean focused;
+    private long completedFrames;
+    long completedFrames(){return completedFrames;}
 
     private StudioImGui() {
         var previous=ImGui.getCurrentContext();
@@ -68,7 +70,7 @@ final class StudioImGui {
         if(nowFocused!=focused) {glfw.windowFocusCallback(window,nowFocused);focused=nowFocused;}
         gl.newFrame();glfw.newFrame();
         if(testPointer) {ImGui.getIO().addMousePosEvent(testX,testY);ImGui.getIO().addMouseButtonEvent(0,testDown);}
-        ImGui.newFrame();draw.run();ImGui.render();gl.renderDrawData(ImGui.getDrawData());
+        ImGui.newFrame();draw.run();ImGui.render();gl.renderDrawData(ImGui.getDrawData());completedFrames++;
     });}
     void mouse(int button,boolean down) {withContext(()->glfw.mouseButtonCallback(window,button,down?1:0,0));}
     void wheel(double x,double y) {withContext(()->glfw.scrollCallback(window,x,y));}

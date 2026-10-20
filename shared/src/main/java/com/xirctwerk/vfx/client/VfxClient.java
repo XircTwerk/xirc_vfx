@@ -26,9 +26,9 @@ public final class VfxClient {
     private String editorTitle="Xirc's VFX";
     public String editorTitle(){return editorTitle;}
     public void setEditorTitle(String title){if(title==null||title.isBlank()||title.length()>128)throw new IllegalArgumentException("Editor title must contain 1..128 characters");editorTitle=title;}
-    public void initialize(Path gameDirectory) {useProjectDirectory(gameDirectory.resolve("config").resolve(MOD_ID));}
+    public synchronized void initialize(Path gameDirectory) {if(files==null)useProjectDirectory(gameDirectory.resolve("config").resolve(MOD_ID));}
     /** Host applications may retain their existing project directory; assets and schema stay canonical. */
-    public void useProjectDirectory(Path directory) {
+    public synchronized void useProjectDirectory(Path directory) {
         try {
             files=new EffectFiles(directory);
             var existing=files.list(); for(String name:Templates.ALL_NAMES) if(!existing.contains(name)) files.save(name,Templates.create(name));

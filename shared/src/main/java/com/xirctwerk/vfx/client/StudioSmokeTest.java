@@ -13,11 +13,15 @@ import org.slf4j.LoggerFactory;
 /** Opt-in development harness. Never runs unless -PxircSmokeTest is passed to Gradle. */
 final class StudioSmokeTest {
     private static int state,ticks;
+    private static long lastEditorFrame=-1;
     private static com.xirctwerk.vfx.api.RibbonTrail trail;
     private static final org.slf4j.Logger LOG=LoggerFactory.getLogger("XircSmokeTest");
     static void tick() {
         if(!Boolean.getBoolean("xirc.smokeTest")) return;
-        Minecraft mc=Minecraft.getInstance();mc.options.pauseOnLostFocus=false;ticks++;
+        Minecraft mc=Minecraft.getInstance();mc.options.pauseOnLostFocus=false;
+        // Tick catch-up can otherwise overwrite a synthetic press/release before ImGui sees it.
+        if(mc.screen instanceof StudioScreen screen){long frame=screen.smokeRenderedFrames();if(frame==lastEditorFrame)return;lastEditorFrame=frame;}
+        ticks++;
         try {
             if(state==0&&mc.screen!=null&&mc.getOverlay()==null&&ticks>80) {mc.options.guiScale().set(3);mc.resizeDisplay();mc.setScreen(new StudioScreen());state=1;ticks=0;}
             else if(state==1&&ticks==40) {var screen=(StudioScreen)mc.screen;screen.smokeWorkspace();screen.smokeJsonSave();LOG.info("XIRC_SMOKE_JSON_SAVE_PASSED");capture("studio-workspace.png");}

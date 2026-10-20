@@ -1,3 +1,5 @@
+> Library integration: the host opens the optional editor with VfxClient.INSTANCE.open(). The V shortcut below is supplied by the separate Studio application.
+
 # Quick start
 
 In 0.5.0, **File → Presets → Advanced presets** adds eight multi-layer compositions. **File → Import Photon .fx** reviews files copied into `config/xirc_vfx_studio/imports/`; open the diagnosed approximation, edit and save JSON. See [Photon import](PHOTON_IMPORT.md) for mapping, limits and resource-pack textures.

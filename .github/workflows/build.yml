@@ -24,5 +24,6 @@ jobs:
           path: |
             fabric/build/libs/*.jar
             neoforge/build/libs/*.jar
+            core/build/libs/*.jar
             core/build/reports/tests/test/
           if-no-files-found: error
