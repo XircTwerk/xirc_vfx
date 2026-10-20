@@ -21,14 +21,21 @@ repositories {
         content { includeGroup 'com.xirctwerk.vfx' }
     }
 }
-// Fabric Loom:
-dependencies { modImplementation 'com.xirctwerk.vfx:xirc_vfx-fabric:0.1.0' }
-// NeoForge: implementation 'com.xirctwerk.vfx:xirc_vfx-neoforge:0.1.0'
+// Fabric Loom: compile against the mapped API.
+dependencies { modCompileOnly 'com.xirctwerk.vfx:xirc_vfx-fabric:0.1.0' }
+// NeoForge: compileOnly 'com.xirctwerk.vfx:xirc_vfx-neoforge:0.1.0'
+// Stage the complete matching release mod for development runtime loading:
+configurations { vfxRuntime }
+dependencies { vfxRuntime 'com.xirctwerk.vfx:xirc_vfx-fabric:0.1.0' }
+tasks.named('runClient') {
+    doFirst { copy { from configurations.vfxRuntime; into file('run/mods') } }
+}
+// Use the neoforge artifact and your configured game directory on NeoForge.
 // Pure Java tools: implementation 'com.xirctwerk.vfx:xirc_vfx-core:0.1.0'
 // The pure core also requires com.google.code.gson:gson:2.10.1.
 ```
 
-Declare `xirc_vfx >=0.1.0` as a required client dependency in your loader metadata. The loader artifact includes the engine and optional editor plus nested UI runtime dependencies; the pure core jar has no Minecraft/UI dependency. Artifact-only Ivy metadata does not infer transitive dependencies for the standalone pure core.
+Declare `xirc_vfx >=0.1.0` as a required client dependency in your loader metadata. The loader artifact includes the engine and optional editor plus nested UI runtime dependencies; the pure core jar has no Minecraft/UI dependency. Artifact-only Ivy metadata does not infer transitive dependencies for the standalone pure core. Loading the complete loader jar from the run directory also ensures its nested ImGui libraries are discovered in development; a mapped compile dependency alone does not do that. Replace an older library jar when upgrading.
 
 ## Client API
 
