@@ -1,0 +1,1040 @@
+{
+  "schemaVersion": 1,
+  "id": "xirc_vfx_studio:astral_gate",
+  "name": "Astral Gate",
+  "author": "XircTwerk",
+  "duration": 4.0,
+  "loop": false,
+  "seed": 1847,
+  "emitters": [
+    {
+      "id": "sigil_0",
+      "kind": "ring_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.5,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.1,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.04
+          },
+          {
+            "time": 1,
+            "value": 0.004
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.0
+          },
+          {
+            "time": 1,
+            "value": 300.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "sigil_1",
+      "kind": "ring_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.5,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.35,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.04
+          },
+          {
+            "time": 1,
+            "value": 0.004
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 40.0
+          },
+          {
+            "time": 1,
+            "value": -300.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "sigil_2",
+      "kind": "ring_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.5,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.6,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.04
+          },
+          {
+            "time": 1,
+            "value": 0.004
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 80.0
+          },
+          {
+            "time": 1,
+            "value": 300.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "rune_0",
+      "kind": "cube_mesh",
+      "start": 0.1,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.2,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.11,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.08
+          },
+          {
+            "time": 1,
+            "value": 0.008
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        1.75,
+        0.0,
+        0.0
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.0
+          },
+          {
+            "time": 1,
+            "value": 180.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "rune_1",
+      "kind": "cube_mesh",
+      "start": 0.1,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.2,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.11,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.08
+          },
+          {
+            "time": 1,
+            "value": 0.008
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        1.2374368670764582,
+        1.237436867076458,
+        0.0
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 45.0
+          },
+          {
+            "time": 1,
+            "value": 225.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "rune_2",
+      "kind": "cube_mesh",
+      "start": 0.1,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.2,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.11,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.08
+          },
+          {
+            "time": 1,
+            "value": 0.008
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        1.071565949253934E-16,
+        1.75,
+        0.0
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 90.0
+          },
+          {
+            "time": 1,
+            "value": 270.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "rune_3",
+      "kind": "cube_mesh",
+      "start": 0.1,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.2,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.11,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.08
+          },
+          {
+            "time": 1,
+            "value": 0.008
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        -1.237436867076458,
+        1.2374368670764582,
+        0.0
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 135.0
+          },
+          {
+            "time": 1,
+            "value": 315.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "rune_4",
+      "kind": "cube_mesh",
+      "start": 0.1,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.2,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.11,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.08
+          },
+          {
+            "time": 1,
+            "value": 0.008
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        -1.75,
+        2.143131898507868E-16,
+        0.0
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 180.0
+          },
+          {
+            "time": 1,
+            "value": 360.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "rune_5",
+      "kind": "cube_mesh",
+      "start": 0.1,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.2,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.11,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.08
+          },
+          {
+            "time": 1,
+            "value": 0.008
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        -1.2374368670764584,
+        -1.237436867076458,
+        0.0
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 225.0
+          },
+          {
+            "time": 1,
+            "value": 405.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "rune_6",
+      "kind": "cube_mesh",
+      "start": 0.1,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.2,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.11,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.08
+          },
+          {
+            "time": 1,
+            "value": 0.008
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        -3.214697847761802E-16,
+        -1.75,
+        0.0
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 270.0
+          },
+          {
+            "time": 1,
+            "value": 450.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "rune_7",
+      "kind": "cube_mesh",
+      "start": 0.1,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.2,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.11,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.08
+          },
+          {
+            "time": 1,
+            "value": 0.008
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        1.237436867076458,
+        -1.2374368670764584,
+        0.0
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 315.0
+          },
+          {
+            "time": 1,
+            "value": 495.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "portal_dust",
+      "kind": "particle",
+      "start": 0.0,
+      "duration": 3.4,
+      "rate": 80.0,
+      "lifetime": 1.0,
+      "speed": 0.4,
+      "shape": "sphere",
+      "radius": 1.3,
+      "spread": 1.0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.07
+          },
+          {
+            "time": 1,
+            "value": 0.007000000000000001
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "noise": 0.8,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "gate_ray",
+      "kind": "beam",
+      "start": 1.1,
+      "duration": 1.5,
+      "rate": 20.0,
+      "lifetime": 0.15,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.0,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.08
+          },
+          {
+            "time": 1,
+            "value": 0.008
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.85,
+              0.95,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.425,
+              0.475,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "length": 4.0,
+      "bloom": 0.8,
+      "blend": "additive"
+    },
+    {
+      "id": "opening_stars",
+      "kind": "particle",
+      "start": 0.1,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.8,
+      "speed": 2.0,
+      "shape": "sphere",
+      "radius": 0.15,
+      "spread": 1.0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.06
+          },
+          {
+            "time": 1,
+            "value": 0.006
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "drag": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 100
+        }
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    }
+  ],
+  "description": "An upright portal of counter-rotating sigils, a luminous perimeter, spiraling motes and a delayed central beam."
+}

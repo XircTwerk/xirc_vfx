@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "xirc_vfx_studio:magic_aura",
+  "name": "Magic Aura",
+  "author": "XircTwerk",
+  "duration": 5,
+  "loop": true,
+  "seed": 42,
+  "emitters": [
+    {
+      "id": "main",
+      "kind": "particle",
+      "shape": "ring",
+      "radius": 1,
+      "spread": 0.1,
+      "rate": 40,
+      "lifetime": 2.5,
+      "size": 0.14,
+      "speed": 0.3,
+      "fade": 0.5,
+      "glow": true,
+      "texture": "xirc_vfx_studio:textures/effect/soft.png",
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.7,
+              0.15,
+              1.0,
+              0.8
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.2,
+              0.5,
+              1.0,
+              0.0
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+[[mods]]
+modId="xirc_vfx"
+version="${version}"
+displayName="Xirc's VFX"
+authors="XircTwerk"
+description='''Reusable visual effects engine, renderer, authoring tools and optional editor by XircTwerk.'''
+[[dependencies.xirc_vfx]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.256,)"
+ordering="NONE"
+side="CLIENT"
+[[dependencies.xirc_vfx]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1]"
+ordering="NONE"
+side="CLIENT"

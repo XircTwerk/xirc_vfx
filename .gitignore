@@ -1,0 +1,13 @@
+.gradle/
+**/build/
+**/run/
+**/run-smoke/
+**/run-data/
+.idea/
+*.iml
+.vscode/
+.env
+.env.*
+*.log
+local.properties
+**/run-packaged-smoke/

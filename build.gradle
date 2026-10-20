@@ -1,0 +1,25 @@
+plugins { id 'base' }
+allprojects {
+    group = 'com.xirctwerk.vfx'
+    version = '0.1.0'
+    repositories { mavenCentral() }
+}
+subprojects {
+    apply plugin: 'java-library'
+    java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
+    tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.release = 21 }
+    tasks.withType(Test).configureEach { useJUnitPlatform() }
+}
+tasks.named('build') { dependsOn ':core:build', ':fabric:build', ':neoforge:build' }
+tasks.named('check') { dependsOn ':core:check', ':fabric:check', ':neoforge:check' }
+
+tasks.register('stageRelease', Copy) {
+    dependsOn ':core:build', ':fabric:build', ':neoforge:build'
+    into layout.buildDirectory.dir("releases/${version}")
+    from(project(':core').tasks.named('jar'))
+    from(project(':core').tasks.named('sourcesJar'))
+    from(project(':fabric').tasks.named('remapJar'))
+    from(project(':fabric').tasks.named('remapSourcesJar'))
+    from(project(':neoforge').tasks.named('jar'))
+    from(project(':neoforge').tasks.named('sourcesJar'))
+}

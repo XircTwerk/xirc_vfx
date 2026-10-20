@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "xirc_vfx_studio:sparks",
+  "name": "Sparks",
+  "author": "XircTwerk",
+  "duration": 5,
+  "loop": true,
+  "seed": 42,
+  "emitters": [
+    {
+      "id": "main",
+      "kind": "particle",
+      "shape": "sphere",
+      "radius": 0.35,
+      "spread": 1,
+      "rate": 35,
+      "lifetime": 1,
+      "size": 0.04,
+      "speed": 3,
+      "fade": 0.5,
+      "glow": true,
+      "texture": "xirc_vfx_studio:textures/effect/soft.png",
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "color": [
+        1.0,
+        0.75,
+        0.18,
+        1.0
+      ],
+      "collision": true,
+      "force": [
+        0.0,
+        -4.0,
+        0.0
+      ]
+    }
+  ]
+}

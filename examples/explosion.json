@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "xirc_vfx_studio:explosion",
+  "name": "Explosion",
+  "author": "XircTwerk",
+  "duration": 1,
+  "loop": false,
+  "seed": 42,
+  "emitters": [
+    {
+      "id": "main",
+      "kind": "particle",
+      "shape": "sphere",
+      "radius": 0.2,
+      "spread": 1,
+      "rate": 0,
+      "lifetime": 1.5,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.16
+          },
+          {
+            "time": 1,
+            "value": 0.03
+          }
+        ]
+      },
+      "speed": 4,
+      "fade": 0.5,
+      "glow": true,
+      "texture": "xirc_vfx_studio:textures/effect/soft.png",
+      "direction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "color": [
+        1.0,
+        0.4,
+        0.05,
+        1.0
+      ],
+      "drag": 2,
+      "bursts": [
+        {
+          "time": 0,
+          "count": 160
+        }
+      ]
+    }
+  ]
+}

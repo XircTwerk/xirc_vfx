@@ -1,0 +1,56 @@
+plugins { id 'net.neoforged.moddev' version '2.0.148' }
+base { archivesName = 'xirc_vfx-neoforge' }
+// Use upstream Dear ImGui bindings; Minecraft supplies GLFW/OpenGL through LWJGL.
+dependencies {
+    ['imgui-java-binding', 'imgui-java-lwjgl3', 'imgui-java-natives-windows', 'imgui-java-natives-linux', 'imgui-java-natives-macos'].each { artifact ->
+        jarJar(implementation("io.github.spair:${artifact}:1.90.0") { transitive = false })
+    }
+}
+sourceSets.main.java.srcDirs += [rootProject.file('shared/src/main/java'), rootProject.file('core/src/main/java')]
+sourceSets.main.resources.srcDir rootProject.file('shared/src/main/resources')
+neoForge {
+    version = project.neo_version
+    runs {
+        client { client(); programArguments.addAll '--username', 'XircTwerk'; if (project.hasProperty('xircSmokeTest')) { systemProperty 'xirc.smokeTest', 'true'; gameDirectory = file(project.hasProperty('xircPackagedSmokeTest') ? 'run-packaged-smoke' : 'run-smoke') } }
+        server { server(); programArgument '--nogui'; if (project.hasProperty('xircServerSmokeTest')) programArgument '--initSettings' }
+    }
+    if (!project.hasProperty('xircPackagedSmokeTest')) { mods { xirc_vfx { sourceSet sourceSets.main } } }
+}
+// NeoForge 1.21.1 requires ordinary libraries on each development run's game classpath.
+neoForge.runs.configureEach {
+    if (!project.hasProperty('xircPackagedSmokeTest')) additionalRuntimeClasspathConfiguration.dependencies.addAll(configurations.implementation.dependencies.findAll { it.group == 'io.github.spair' })
+}
+processResources {
+    inputs.property 'version', project.version; filesMatching('META-INF/neoforge.mods.toml') { expand version: project.version }
+    from(rootProject.file('schema')) { into 'studio_authoring/schema' }
+    from(rootProject.file('docs')) { include 'AGENT_AUTHORING.md', 'JSON_FORMAT.md'; into 'studio_authoring/docs' }
+    from(rootProject.file('docs/RUNTIME_AGENTS.md')) { rename { 'AGENTS.md' }; into 'studio_authoring' }
+}
+jar { from(rootProject.file('LICENSE')) }
+tasks.matching { it.name == 'runClient' }.configureEach {
+    doLast {
+        if (project.hasProperty('xircSmokeTest')) {
+            def log = file(project.hasProperty('xircPackagedSmokeTest') ? 'run-packaged-smoke/logs/latest.log' : 'run-smoke/logs/latest.log').text
+            if (!log.contains('XIRC_SMOKE_TRANSFORMS_PASSED')) throw new GradleException('Transform hierarchy smoke check failed')
+            if (!log.contains('XIRC_SMOKE_MOTION_PASSED')) throw new GradleException('Motion authoring smoke check failed')
+            if (!log.contains('XIRC_SMOKE_PARAMETERS_PASSED')) throw new GradleException('Parameter controls smoke check failed')
+            if (!log.contains('XIRC_SMOKE_WORKBENCH_PASSED')) throw new GradleException('Workbench smoke check failed')
+            if (!log.contains('XIRC_SMOKE_CLOUDS_PASSED')) throw new GradleException('Cloud composition smoke check failed')
+            if (!log.contains('XIRC_SMOKE_CONTROL_HINTS_PASSED')) throw new GradleException('Control hints smoke check failed')
+            if (!log.contains('XIRC_SMOKE_AUTHORING_SHORTCUTS_PASSED') || !log.contains('XIRC_SMOKE_PIVOT_PLACEMENT_PASSED')) throw new GradleException('Authoring/placement smoke check failed')
+            if (!log.contains('XIRC_SMOKE_TIMELINE_PASSED') || !log.contains('XIRC_SMOKE_WORLD_SCRUB_PASSED')) throw new GradleException('Timeline smoke check failed')
+            if (!log.contains('XIRC_SMOKE_BLOOM_PASSED') || !log.contains('XIRC_SMOKE_PHOTON_VISIBLE_PASSED') || log.contains('Bloom disabled after')) throw new GradleException('Bloom/import visibility smoke check failed')
+            if (!log.contains('XIRC_SMOKE_LAYER_AUDITION_PASSED') || !log.contains('XIRC_SMOKE_GUIDE_PASSED')) throw new GradleException('Layer audition/guide smoke check failed')
+            if (!log.contains('XIRC_SMOKE_ADVANCED_PRESETS_PASSED') || !log.contains('XIRC_SMOKE_PHOTON_IMPORT_PASSED')) throw new GradleException('Advanced preset/Photon runtime smoke check failed')
+            if (!log.contains('XIRC_SMOKE_JSON_SAVE_PASSED') || !log.contains('XIRC_SMOKE_BURST_EDITOR_PASSED') || !log.contains('XIRC_SMOKE_PROPERTY_EDITOR_PASSED') || !log.contains('XIRC_SMOKE_IMGUI_PASSED') || !log.contains('XIRC_SMOKE_COMPLETE') || !log.contains('XIRC_SMOKE_COMMANDS_AND_PACKAGE_PASSED') || !log.contains('XIRC_SMOKE_GEOMETRY_RENDERED') || !log.contains('XIRC_SMOKE_EDITOR_INPUT_PASSED') || !log.contains('XIRC_SMOKE_WORLD_PREVIEW_PASSED') || log.contains('XIRC_SMOKE_FAILED')) throw new GradleException('Studio runtime smoke check failed; inspect run/logs/latest.log')
+        }
+    }
+}
+
+// Opt-in check of the actual jar and its nested libraries, without development classpath additions.
+if (project.hasProperty('xircPackagedSmokeTest')) {
+    tasks.named('runClient') {
+        dependsOn tasks.named('jar')
+        doFirst { copy { from tasks.named('jar').get().archiveFile; into file('run-packaged-smoke/mods') } }
+    }
+}

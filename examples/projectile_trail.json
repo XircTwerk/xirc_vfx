@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "xirc_vfx_studio:projectile_trail",
+  "name": "Projectile Trail",
+  "author": "XircTwerk",
+  "duration": 5,
+  "loop": true,
+  "seed": 42,
+  "emitters": [
+    {
+      "id": "main",
+      "kind": "trail",
+      "shape": "point",
+      "radius": 0.35,
+      "spread": 0.3,
+      "rate": 20,
+      "lifetime": 1,
+      "size": 0.08,
+      "speed": 0.5,
+      "fade": 0.5,
+      "glow": true,
+      "texture": "xirc_vfx_studio:textures/effect/soft.png",
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.3,
+              0.8,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.1,
+              0.2,
+              1.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "space": "world",
+      "trailPoints": 16
+    }
+  ]
+}

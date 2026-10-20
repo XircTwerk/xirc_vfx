@@ -1,0 +1,24 @@
+base { archivesName = 'xirc_vfx-core' }
+dependencies {
+    api 'com.google.code.gson:gson:2.10.1'
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'com.networknt:json-schema-validator:1.5.6'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+tasks.named('test') { inputs.file(rootProject.file('schema/effect.schema.json')) }
+tasks.register('exportTemplates', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.xirctwerk.vfx.core.Templates'
+    args rootProject.file('examples').absolutePath
+}
+tasks.register('validateEffect', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.xirctwerk.vfx.core.EffectCli'
+    if (project.hasProperty('effect')) args project.property('effect')
+}
+tasks.register('importPhoton', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.xirctwerk.vfx.core.PhotonImportCli'
+    if (project.hasProperty('photon')) args project.property('photon'), project.findProperty('output') ?: '', project.findProperty('approximate') ?: 'false'
+}

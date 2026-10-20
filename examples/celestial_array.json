@@ -1,0 +1,1250 @@
+{
+  "schemaVersion": 1,
+  "id": "xirc_vfx_studio:celestial_array",
+  "name": "Celestial Array",
+  "author": "XircTwerk",
+  "duration": 4.0,
+  "loop": false,
+  "seed": 1847,
+  "emitters": [
+    {
+      "id": "central_star",
+      "kind": "sphere_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.0,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.25,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.06
+          },
+          {
+            "time": 1,
+            "value": 0.006
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.85,
+              0.95,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.425,
+              0.475,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "celestial_circle",
+      "kind": "ring_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 3.0,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 2.0,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.035
+          },
+          {
+            "time": 1,
+            "value": 0.0035000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.0
+          },
+          {
+            "time": 1,
+            "value": 180.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "star_0",
+      "kind": "sphere_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 2.5,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.12,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.04
+          },
+          {
+            "time": 1,
+            "value": 0.004
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        2.0,
+        0.0,
+        0.0
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "spoke_0",
+      "kind": "beam",
+      "start": 0.0,
+      "duration": 2.5,
+      "rate": 20.0,
+      "lifetime": 0.15,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.0,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.025
+          },
+          {
+            "time": 1,
+            "value": 0.0025000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "length": 2.0,
+      "bloom": 0.8,
+      "blend": "additive"
+    },
+    {
+      "id": "star_1",
+      "kind": "sphere_mesh",
+      "start": 0.08,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 2.5,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.12,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.04
+          },
+          {
+            "time": 1,
+            "value": 0.004
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        1.4142135623730951,
+        1.414213562373095,
+        0.0
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "spoke_1",
+      "kind": "beam",
+      "start": 0.08,
+      "duration": 2.5,
+      "rate": 20.0,
+      "lifetime": 0.15,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.0,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.025
+          },
+          {
+            "time": 1,
+            "value": 0.0025000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.7071067811865476,
+        0.7071067811865475,
+        0.0
+      ],
+      "length": 2.0,
+      "bloom": 0.8,
+      "blend": "additive"
+    },
+    {
+      "id": "star_2",
+      "kind": "sphere_mesh",
+      "start": 0.16,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 2.5,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.12,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.04
+          },
+          {
+            "time": 1,
+            "value": 0.004
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        1.2246467991473532E-16,
+        2.0,
+        0.0
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "spoke_2",
+      "kind": "beam",
+      "start": 0.16,
+      "duration": 2.5,
+      "rate": 20.0,
+      "lifetime": 0.15,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.0,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.025
+          },
+          {
+            "time": 1,
+            "value": 0.0025000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        6.123233995736766E-17,
+        1.0,
+        0.0
+      ],
+      "length": 2.0,
+      "bloom": 0.8,
+      "blend": "additive"
+    },
+    {
+      "id": "star_3",
+      "kind": "sphere_mesh",
+      "start": 0.24,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 2.5,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.12,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.04
+          },
+          {
+            "time": 1,
+            "value": 0.004
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        -1.414213562373095,
+        1.4142135623730951,
+        0.0
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "spoke_3",
+      "kind": "beam",
+      "start": 0.24,
+      "duration": 2.5,
+      "rate": 20.0,
+      "lifetime": 0.15,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.0,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.025
+          },
+          {
+            "time": 1,
+            "value": 0.0025000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        -0.7071067811865475,
+        0.7071067811865476,
+        0.0
+      ],
+      "length": 2.0,
+      "bloom": 0.8,
+      "blend": "additive"
+    },
+    {
+      "id": "star_4",
+      "kind": "sphere_mesh",
+      "start": 0.32,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 2.5,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.12,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.04
+          },
+          {
+            "time": 1,
+            "value": 0.004
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        -2.0,
+        2.4492935982947064E-16,
+        0.0
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "spoke_4",
+      "kind": "beam",
+      "start": 0.32,
+      "duration": 2.5,
+      "rate": 20.0,
+      "lifetime": 0.15,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.0,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.025
+          },
+          {
+            "time": 1,
+            "value": 0.0025000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        -1.0,
+        1.2246467991473532E-16,
+        0.0
+      ],
+      "length": 2.0,
+      "bloom": 0.8,
+      "blend": "additive"
+    },
+    {
+      "id": "star_5",
+      "kind": "sphere_mesh",
+      "start": 0.4,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 2.5,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.12,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.04
+          },
+          {
+            "time": 1,
+            "value": 0.004
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        -1.4142135623730954,
+        -1.414213562373095,
+        0.0
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "spoke_5",
+      "kind": "beam",
+      "start": 0.4,
+      "duration": 2.5,
+      "rate": 20.0,
+      "lifetime": 0.15,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.0,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.025
+          },
+          {
+            "time": 1,
+            "value": 0.0025000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        -0.7071067811865477,
+        -0.7071067811865475,
+        0.0
+      ],
+      "length": 2.0,
+      "bloom": 0.8,
+      "blend": "additive"
+    },
+    {
+      "id": "star_6",
+      "kind": "sphere_mesh",
+      "start": 0.48,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 2.5,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.12,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.04
+          },
+          {
+            "time": 1,
+            "value": 0.004
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        -3.6739403974420594E-16,
+        -2.0,
+        0.0
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "spoke_6",
+      "kind": "beam",
+      "start": 0.48,
+      "duration": 2.5,
+      "rate": 20.0,
+      "lifetime": 0.15,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.0,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.025
+          },
+          {
+            "time": 1,
+            "value": 0.0025000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        -1.8369701987210297E-16,
+        -1.0,
+        0.0
+      ],
+      "length": 2.0,
+      "bloom": 0.8,
+      "blend": "additive"
+    },
+    {
+      "id": "star_7",
+      "kind": "sphere_mesh",
+      "start": 0.56,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 2.5,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.12,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.04
+          },
+          {
+            "time": 1,
+            "value": 0.004
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "offset": [
+        1.4142135623730947,
+        -1.4142135623730954,
+        0.0
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "spoke_7",
+      "kind": "beam",
+      "start": 0.56,
+      "duration": 2.5,
+      "rate": 20.0,
+      "lifetime": 0.15,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.0,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.025
+          },
+          {
+            "time": 1,
+            "value": 0.0025000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.7071067811865474,
+        -0.7071067811865477,
+        0.0
+      ],
+      "length": 2.0,
+      "bloom": 0.8,
+      "blend": "additive"
+    },
+    {
+      "id": "stardust",
+      "kind": "particle",
+      "start": 0.0,
+      "duration": 2.8,
+      "rate": 90.0,
+      "lifetime": 1.4,
+      "speed": 0.2,
+      "shape": "sphere",
+      "radius": 2.0,
+      "spread": 1.0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.035
+          },
+          {
+            "time": 1,
+            "value": 0.0035000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.85,
+              0.95,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.425,
+              0.475,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "noise": 0.4,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "nova",
+      "kind": "particle",
+      "start": 2.8,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 1.0,
+      "speed": 4.0,
+      "shape": "sphere",
+      "radius": 0.15,
+      "spread": 1.0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.08
+          },
+          {
+            "time": 1,
+            "value": 0.008
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "drag": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 200
+        }
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    }
+  ],
+  "description": "A suspended constellation of eight star nodes, a radial beam lattice, orbiting dust and a final outward starburst."
+}

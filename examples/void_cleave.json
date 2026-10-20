@@ -1,0 +1,904 @@
+{
+  "schemaVersion": 1,
+  "id": "xirc_vfx_studio:void_cleave",
+  "name": "Void Cleave",
+  "author": "XircTwerk",
+  "duration": 4.0,
+  "loop": false,
+  "seed": 1847,
+  "emitters": [
+    {
+      "id": "cut_0",
+      "kind": "slash",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.7,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.6,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.13
+          },
+          {
+            "time": 1,
+            "value": 0.013000000000000001
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": -65,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "edge_0",
+      "kind": "slash",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.35,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.6,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.035
+          },
+          {
+            "time": 1,
+            "value": 0.0035000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.85,
+              0.95,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.425,
+              0.475,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": -65,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "cut_1",
+      "kind": "slash",
+      "start": 0.22,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.7,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.7200000000000002,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.13
+          },
+          {
+            "time": 1,
+            "value": 0.013000000000000001
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": -28,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "edge_1",
+      "kind": "slash",
+      "start": 0.22,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.35,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.7200000000000002,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.035
+          },
+          {
+            "time": 1,
+            "value": 0.0035000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.85,
+              0.95,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.425,
+              0.475,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": -28,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "cut_2",
+      "kind": "slash",
+      "start": 0.44,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.7,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.84,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.13
+          },
+          {
+            "time": 1,
+            "value": 0.013000000000000001
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": 9,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "edge_2",
+      "kind": "slash",
+      "start": 0.44,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.35,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.84,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.035
+          },
+          {
+            "time": 1,
+            "value": 0.0035000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.85,
+              0.95,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.425,
+              0.475,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": 9,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "cut_3",
+      "kind": "slash",
+      "start": 0.66,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.7,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.96,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.13
+          },
+          {
+            "time": 1,
+            "value": 0.013000000000000001
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": 46,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "edge_3",
+      "kind": "slash",
+      "start": 0.66,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.35,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.96,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.035
+          },
+          {
+            "time": 1,
+            "value": 0.0035000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.85,
+              0.95,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.425,
+              0.475,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": 46,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "cut_4",
+      "kind": "slash",
+      "start": 0.88,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.7,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 2.08,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.13
+          },
+          {
+            "time": 1,
+            "value": 0.013000000000000001
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": 83,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "edge_4",
+      "kind": "slash",
+      "start": 0.88,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.35,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 2.08,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.035
+          },
+          {
+            "time": 1,
+            "value": 0.0035000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.85,
+              0.95,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.425,
+              0.475,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": 83,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "ribbon_shards",
+      "kind": "trail",
+      "start": 0.8,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 1.3,
+      "speed": 4.0,
+      "shape": "sphere",
+      "radius": 0.15,
+      "spread": 1.0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.055
+          },
+          {
+            "time": 1,
+            "value": 0.0055000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "drag": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 35
+        }
+      ],
+      "trailPoints": 18,
+      "noise": 1.2,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "cut_release",
+      "kind": "ring_mesh",
+      "start": 1.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.8,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 2.5,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.12
+          },
+          {
+            "time": 1,
+            "value": 0.012
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "meshScale": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.05
+          },
+          {
+            "time": 1,
+            "value": 1.5
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "cut_release_dust",
+      "kind": "particle",
+      "start": 1.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.8,
+      "speed": 3.0,
+      "shape": "ring",
+      "radius": 2.5,
+      "spread": 1.0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.055
+          },
+          {
+            "time": 1,
+            "value": 0.0055000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "drag": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 80
+        }
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "cut_dust",
+      "kind": "particle",
+      "start": 1.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 1.5,
+      "speed": 2.0,
+      "shape": "sphere",
+      "radius": 0.15,
+      "spread": 1.0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.06
+          },
+          {
+            "time": 1,
+            "value": 0.006
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "drag": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 110
+        }
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    }
+  ],
+  "description": "A five-stroke crossing slash sequence with violet edges, bright cores, thrown trails and a delayed ring impact."
+}

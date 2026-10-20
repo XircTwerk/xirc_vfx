@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "xirc_vfx",
+  "version": "${version}",
+  "name": "Xirc's VFX",
+  "description": "Reusable visual effects engine, renderer, authoring tools and optional in-game editor by XircTwerk.",
+  "authors": [
+    "XircTwerk"
+  ],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.xirctwerk.vfx.fabric.XircFabric"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

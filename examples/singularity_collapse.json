@@ -1,0 +1,636 @@
+{
+  "schemaVersion": 1,
+  "id": "xirc_vfx_studio:singularity_collapse",
+  "name": "Singularity Collapse",
+  "author": "XircTwerk",
+  "duration": 4.0,
+  "loop": false,
+  "seed": 1847,
+  "emitters": [
+    {
+      "id": "event_horizon",
+      "kind": "sphere_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 1.7,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.7,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.06
+          },
+          {
+            "time": 1,
+            "value": 0.006
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.12,
+              0.01,
+              0.3,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.06,
+              0.005,
+              0.21,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "meshScale": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.08
+          },
+          {
+            "time": 1,
+            "value": 1.3
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "accretion",
+      "kind": "particle",
+      "start": 0.0,
+      "duration": 1.6,
+      "rate": 130.0,
+      "lifetime": 1.1,
+      "speed": -1.8,
+      "shape": "spiral",
+      "radius": 1.5,
+      "spread": 0.08,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.065
+          },
+          {
+            "time": 1,
+            "value": 0.006500000000000001
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "length": 1.2,
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "orbit_0",
+      "kind": "ring_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 1.7,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.6,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.055
+          },
+          {
+            "time": 1,
+            "value": 0.0055000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.0
+          },
+          {
+            "time": 1,
+            "value": 260.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "orbit_1",
+      "kind": "ring_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 1.7,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.6,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.055
+          },
+          {
+            "time": 1,
+            "value": 0.0055000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 60.0
+          },
+          {
+            "time": 1,
+            "value": 320.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "orbit_2",
+      "kind": "ring_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 1.7,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.6,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.055
+          },
+          {
+            "time": 1,
+            "value": 0.0055000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "rotation": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 120.0
+          },
+          {
+            "time": 1,
+            "value": 380.0
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "collapse_flash",
+      "kind": "sphere_mesh",
+      "start": 1.7,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 0.35,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.1,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.15
+          },
+          {
+            "time": 1,
+            "value": 0.015
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.85,
+              0.95,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.425,
+              0.475,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "meshScale": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 1.4
+          },
+          {
+            "time": 1,
+            "value": 0.02
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "ejecta",
+      "kind": "particle",
+      "start": 1.75,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 1.5,
+      "speed": 5.5,
+      "shape": "sphere",
+      "radius": 0.15,
+      "spread": 1.0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.12
+          },
+          {
+            "time": 1,
+            "value": 0.012
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "drag": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 230
+        }
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "shockwave",
+      "kind": "ring_mesh",
+      "start": 1.8,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 1.1,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 2.8,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.12
+          },
+          {
+            "time": 1,
+            "value": 0.012
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 2,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "meshScale": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.05
+          },
+          {
+            "time": 1,
+            "value": 1.5
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "shockwave_dust",
+      "kind": "particle",
+      "start": 1.8,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 1.1,
+      "speed": 3.0,
+      "shape": "ring",
+      "radius": 2.8,
+      "spread": 1.0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.055
+          },
+          {
+            "time": 1,
+            "value": 0.0055000000000000005
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "drag": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 80
+        }
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    }
+  ],
+  "description": "An unstable violet core, spiraling accretion, crossing orbital cages, then a delayed collapse and debris shockwave."
+}

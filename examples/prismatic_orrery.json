@@ -1,0 +1,526 @@
+{
+  "schemaVersion": 1,
+  "id": "xirc_vfx_studio:prismatic_orrery",
+  "name": "Prismatic Orrery",
+  "author": "XircTwerk",
+  "duration": 8,
+  "loop": false,
+  "seed": 1847,
+  "emitters": [
+    {
+      "id": "orrery_pivot",
+      "kind": "particle",
+      "start": 0.0,
+      "duration": 8.0,
+      "rate": 0.0,
+      "lifetime": 0.05,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.0,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.01
+          },
+          {
+            "time": 1,
+            "value": 0.001
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.85,
+              0.95,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.425,
+              0.475,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "folder": "Orrery",
+      "transform": {
+        "keys": [
+          {
+            "time": 0
+          },
+          {
+            "time": 2,
+            "rotation": [
+              25,
+              90,
+              30
+            ],
+            "scale": 1.2
+          },
+          {
+            "time": 4,
+            "rotation": [
+              -25,
+              180,
+              60
+            ],
+            "position": [
+              0,
+              0.5,
+              0
+            ]
+          },
+          {
+            "time": 6,
+            "rotation": [
+              25,
+              270,
+              90
+            ],
+            "scale": 0.8
+          },
+          {
+            "time": 8,
+            "rotation": [
+              0,
+              360,
+              120
+            ]
+          }
+        ]
+      },
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "armillary_0",
+      "kind": "ring_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 7.9,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.3,
+      "spread": 0,
+      "fade": 0.05,
+      "glow": true,
+      "size": 0.035,
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "parent": "orrery_pivot",
+      "folder": "Orrery",
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "armillary_1",
+      "kind": "ring_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 7.9,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.6,
+      "spread": 0,
+      "fade": 0.05,
+      "glow": true,
+      "size": 0.035,
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              1.0,
+              0.65,
+              0.06,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.5,
+              0.325,
+              0.041999999999999996,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "parent": "orrery_pivot",
+      "folder": "Orrery",
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "armillary_2",
+      "kind": "ring_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 7.9,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 1.9,
+      "spread": 0,
+      "fade": 0.05,
+      "glow": true,
+      "size": 0.035,
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "parent": "orrery_pivot",
+      "folder": "Orrery",
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "satellite_0",
+      "kind": "sphere_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 7.9,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.2,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": 0.04,
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.65,
+              0.12,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.325,
+              0.06,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "parent": "orrery_pivot",
+      "offset": [
+        -1.7,
+        0.0,
+        0.0
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "satellite_1",
+      "kind": "sphere_mesh",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 7.9,
+      "speed": 0.0,
+      "shape": "point",
+      "radius": 0.2,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": 0.04,
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              1.0,
+              0.65,
+              0.06,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.5,
+              0.325,
+              0.041999999999999996,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "pixelSize": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 1
+        }
+      ],
+      "parent": "orrery_pivot",
+      "offset": [
+        1.7,
+        0.0,
+        0.0
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "clockwork_dust",
+      "kind": "particle",
+      "start": 0.0,
+      "duration": 7.0,
+      "rate": 55.0,
+      "lifetime": 1.4,
+      "speed": 0.0,
+      "shape": "ring",
+      "radius": 1.8,
+      "spread": 0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.045
+          },
+          {
+            "time": 1,
+            "value": 0.0045
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.15,
+              0.85,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.075,
+              0.425,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "parent": "orrery_pivot",
+      "orbitSpeed": 180,
+      "orbitRadius": [
+        0.08,
+        0.08,
+        0.08
+      ],
+      "bloom": 1.2,
+      "blend": "additive"
+    },
+    {
+      "id": "ignition_stars",
+      "kind": "particle",
+      "start": 0.0,
+      "duration": 0.05,
+      "rate": 0.0,
+      "lifetime": 1.2,
+      "speed": 1.4,
+      "shape": "sphere",
+      "radius": 0.15,
+      "spread": 1.0,
+      "fade": 0.35,
+      "glow": true,
+      "size": {
+        "curve": [
+          {
+            "time": 0,
+            "value": 0.04
+          },
+          {
+            "time": 1,
+            "value": 0.004
+          }
+        ]
+      },
+      "color": {
+        "gradient": [
+          {
+            "time": 0,
+            "color": [
+              0.85,
+              0.95,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "time": 1,
+            "color": [
+              0.425,
+              0.475,
+              0.7,
+              0.0
+            ]
+          }
+        ]
+      },
+      "direction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "drag": 1,
+      "bursts": [
+        {
+          "time": 0.0,
+          "count": 90
+        }
+      ],
+      "parent": "orrery_pivot",
+      "bloom": 1.2,
+      "blend": "additive"
+    }
+  ],
+  "description": "A nested clockwork constellation: one animated parent carries crossing rings, orbiting cores, luminous paths and a rotating dust halo. Edit its seconds-based transform in Tools > Transforms.",
+  "markers": [
+    {
+      "name": "expansion",
+      "time": 2
+    },
+    {
+      "name": "crest",
+      "time": 4
+    },
+    {
+      "name": "contraction",
+      "time": 6
+    }
+  ]
+}
