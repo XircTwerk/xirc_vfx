@@ -60,9 +60,9 @@ final class TransformEditor {
 
         float[] rotation=vector(object,"rotation"),scale={object.has("scale")?object.get("scale").getAsFloat():1};
 
-        if(ImGui.dragFloat3("Layer rotation (XYZ degrees)",rotation,.5f,-36000,36000))edit(frame,o->Authoring.setTransform(o,frame.selected(),"rotation",vector(rotation[0],rotation[1],rotation[2])),true);EditorHints.limits(-36000,36000);EditorHints.tip("Euler rotation: X, then Y, then Z. Child translations and directions rotate with the parent.");
+        if(ImGui.sliderFloat3("Layer rotation (XYZ degrees)",rotation,-36000,36000,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp))edit(frame,o->Authoring.setTransform(o,frame.selected(),"rotation",vector(rotation[0],rotation[1],rotation[2])),true);EditorHints.limits(-36000,36000);EditorHints.tip("Euler rotation: X, then Y, then Z. Child translations and directions rotate with the parent.");
 
-        if(ImGui.dragFloat("Layer scale",scale,.01f,.01f,8))edit(frame,o->Authoring.setTransform(o,frame.selected(),"scale",new JsonPrimitive(scale[0])),true);scaleX=(ImGui.getItemRectMinX()+ImGui.getItemRectMaxX())/2;scaleY=(ImGui.getItemRectMinY()+ImGui.getItemRectMaxY())/2;EditorHints.limits(.01,8);EditorHints.tip("Uniform transform scale affects positions, sprite sizes, mesh extents and beam length. Combined hierarchy scale must stay between 0.0001 and 64.");
+        if(ImGui.sliderFloat("Layer scale",scale,.01f,8,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp))edit(frame,o->Authoring.setTransform(o,frame.selected(),"scale",new JsonPrimitive(scale[0])),true);scaleX=(ImGui.getItemRectMinX()+ImGui.getItemRectMaxX())/2;scaleY=(ImGui.getItemRectMinY()+ImGui.getItemRectMaxY())/2;EditorHints.limits(.01,8);EditorHints.tip("Uniform transform scale affects positions, sprite sizes, mesh extents and beam length. Combined hierarchy scale must stay between 0.0001 and 64.");
 
         ImGui.separator();ImGui.text("Animated layer: "+id);
 
@@ -92,13 +92,13 @@ final class TransformEditor {
 
             float lo=index==0?0:keys.get(index-1).getAsJsonObject().get("time").getAsFloat()+.0001f,hi=index==keys.size()-1?631:keys.get(index+1).getAsJsonObject().get("time").getAsFloat()-.0001f;
 
-            if(ImGui.dragFloat("Effect second",time,.02f,lo,hi))editKey(frame,id,index,k->k.addProperty("time",Math.max(lo,Math.min(hi,time[0]))));EditorHints.limits(lo,hi);
+            if(ImGui.sliderFloat("Effect second",time,lo,hi,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp))editKey(frame,id,index,k->k.addProperty("time",Math.max(lo,Math.min(hi,time[0]))));EditorHints.limits(lo,hi);
 
-            if(ImGui.dragFloat3("Key position (blocks)",position,.05f,-128,128))editKey(frame,id,index,k->k.add("position",vector(position[0],position[1],position[2])));EditorHints.limits(-128,128);
+            if(ImGui.sliderFloat3("Key position (blocks)",position,-128,128,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp))editKey(frame,id,index,k->k.add("position",vector(position[0],position[1],position[2])));EditorHints.limits(-128,128);
 
-            if(ImGui.dragFloat3("Key rotation (XYZ)",angles,.5f,-36000,36000))editKey(frame,id,index,k->k.add("rotation",vector(angles[0],angles[1],angles[2])));EditorHints.limits(-36000,36000);
+            if(ImGui.sliderFloat3("Key rotation (XYZ)",angles,-36000,36000,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp))editKey(frame,id,index,k->k.add("rotation",vector(angles[0],angles[1],angles[2])));EditorHints.limits(-36000,36000);
 
-            if(ImGui.dragFloat("Key scale multiplier",factor,.01f,.01f,8))editKey(frame,id,index,k->k.addProperty("scale",factor[0]));EditorHints.limits(.01,8);
+            if(ImGui.sliderFloat("Key scale multiplier",factor,.01f,8,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp))editKey(frame,id,index,k->k.addProperty("scale",factor[0]));EditorHints.limits(.01,8);
 
             if(index<keys.size()-1&&EasingEditor.render(key)){var easing=key.has("easing")?key.get("easing").deepCopy():null;editKey(frame,id,index,k->{if(easing==null)k.remove("easing");else k.add("easing",easing);});}
 

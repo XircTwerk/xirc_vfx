@@ -10,6 +10,25 @@ public final class Authoring {
     public static JsonObject layer(JsonObject json,String id){for(var item:json.getAsJsonArray("emitters")){var e=item.getAsJsonObject();if(e.get("id").getAsString().equals(id))return e;}throw new IllegalArgumentException("Layer no longer exists: "+id);}
     public static Set<String> ids(JsonObject json){var ids=new LinkedHashSet<String>();for(var item:json.getAsJsonArray("emitters"))ids.add(item.getAsJsonObject().get("id").getAsString());return ids;}
     public static void set(JsonObject json,Set<String> selection,String field,JsonElement value){if(selection.isEmpty())throw new IllegalArgumentException("Select layers first.");for(String id:selection)layer(json,id).add(field,value.deepCopy());}
+    /** Remove only fields that have no meaning for the chosen visual; Project retains undo. */
+    public static void changeKind(JsonObject json,Set<String> selection,String kind){
+        if(!Set.of("particle","beam","trail","slash","ring_mesh","cube_mesh","sphere_mesh","lightning").contains(kind))throw new IllegalArgumentException("Unknown visual: "+kind);
+        if(selection.isEmpty())throw new IllegalArgumentException("Select layers first.");
+        Set<String> removed=new HashSet<>();
+        for(String id:selection){var e=layer(json,id);if((e.has("kind")?e.get("kind").getAsString():"particle").equals(kind))continue;e.addProperty("kind",kind);
+            List<String> incompatible=new ArrayList<>();
+            if(!Geometry.supports(kind)){incompatible.add("meshScale");if(e.has("pixelSize")&&e.get("pixelSize").getAsInt()>1)incompatible.add("pixelSize");}
+            else incompatible.add("textureAnimation");
+            if(!kind.equals("particle"))incompatible.addAll(List.of("aspect","alignVelocity","stretch"));
+            for(String field:incompatible){e.remove(field);removed.add(id+":"+field);}
+        }
+        if(json.has("parameters")){var parameters=json.getAsJsonArray("parameters");
+            for(int i=parameters.size()-1;i>=0;i--){var targets=parameters.get(i).getAsJsonObject().getAsJsonArray("targets");
+                for(int j=targets.size()-1;j>=0;j--){var t=targets.get(j).getAsJsonObject();if(removed.contains(t.get("layer").getAsString()+":"+t.get("property").getAsString()))targets.remove(j);}
+                if(targets.isEmpty())parameters.remove(i);
+            }
+        }
+    }
     public static Set<String> selectedRoots(JsonObject json,Set<String> selection){
         var roots=new LinkedHashSet<String>();
         for(String id:selection){var e=layer(json,id);String parent=e.has("parent")?e.get("parent").getAsString():"";var visited=new HashSet<String>();boolean inherited=false;

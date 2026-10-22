@@ -27,8 +27,8 @@ final class PropertyEditor {
     }
     void curve() {mode("Curve");}
     void smokeEasing(){point=0;showEasing=true;keys().get(0).getAsJsonObject().add("easing",JsonParser.parseString("{\"mode\":\"bezier\",\"controls\":[0.25,0.1,0.25,1]}"));}
-    private double min() {return switch(property) {case "size","meshScale"->.001;case "lifetime"->.05;case "speed"->-50;case "rotation"->-36000;default->0;};}
-    private double max() {return switch(property) {case "size"->10;case "meshScale"->8;case "lifetime"->30;case "speed"->50;case "rotation"->36000;default->1;};}
+    private double min() {var b=EditorHints.bounds(property);return b==null?0:b.min();}
+    private double max() {var b=EditorHints.bounds(property);return b==null?1:b.max();}
     private String mode() {
         if(property.equals("bursts")) return "Events";
         if(draft.isJsonObject()) {var o=draft.getAsJsonObject();return o.has("curve")?"Curve":o.has("gradient")?"Gradient":"Random range";}
@@ -77,12 +77,12 @@ final class PropertyEditor {
             EditorHints.tip("Constants stay fixed; ranges sample each birth; curves and gradients interpolate over particle lifetime.");
             ImGui.textWrapped(property.equals("bursts")?"Birth events use seconds after this layer starts.":"Time runs from birth (0) to the end of a particle's life (1). Only this property changes when you apply.");
             if(mode().equals("Constant")) {
-                if(property.equals("color")) {var c=rgba(color());if(ImGui.colorEdit4("Color and opacity",c)) draft=rgba(c);EditorHints.tip(EditorHints.description("color",false));EditorHints.limits(0,255);}
-                else {float[] n={(float)initial()};if(ImGui.dragFloat("Value",n,.01f,(float)min(),(float)max())) draft=new JsonPrimitive(n[0]);EditorHints.tip(EditorHints.description(property,false));EditorHints.limits(min(),max());}
+                if(property.equals("color")) {var c=rgba(color());if(ImGui.colorEdit4("Color and opacity",c,imgui.flag.ImGuiColorEditFlags.Float)) draft=rgba(c);EditorHints.tip(EditorHints.description("color",false));EditorHints.limits(0,255);}
+                else {float[] n={(float)initial()};if(ImGui.sliderFloat("Value",n,(float)min(),(float)max(),"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp)) draft=new JsonPrimitive(n[0]);EditorHints.tip(EditorHints.description(property,false));EditorHints.limits(min(),max());}
             } else if(mode().equals("Random range")) {
                 var o=draft.getAsJsonObject();float[] a={o.get("min").getAsFloat()},b={o.get("max").getAsFloat()};
-                if(ImGui.dragFloat("Minimum",a,.01f,(float)min(),b[0])) o.addProperty("min",a[0]);EditorHints.tip("Smallest value sampled for a new particle. It cannot exceed Maximum.");EditorHints.limits(min(),b[0]);
-                if(ImGui.dragFloat("Maximum",b,.01f,a[0],(float)max())) o.addProperty("max",b[0]);EditorHints.tip("Largest value sampled for a new particle. It cannot be below Minimum.");EditorHints.limits(a[0],max());
+                if(ImGui.sliderFloat("Minimum",a,(float)min(),b[0],"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp)) o.addProperty("min",a[0]);EditorHints.tip("Smallest value sampled for a new particle. It cannot exceed Maximum.");EditorHints.limits(min(),b[0]);
+                if(ImGui.sliderFloat("Maximum",b,a[0],(float)max(),"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp)) o.addProperty("max",b[0]);EditorHints.tip("Largest value sampled for a new particle. It cannot be below Minimum.");EditorHints.limits(a[0],max());
                 ImGui.textWrapped("Each new particle receives a deterministic random value within this range.");
             } else {
                 if(mode().equals("Curve")) graph();
@@ -104,10 +104,10 @@ final class PropertyEditor {
                     ImGui.setNextItemWidth(90);float[] t={k.get("time").getAsFloat()};
                     float lo=property.equals("bursts")?0:i==0?0:keys.get(i-1).getAsJsonObject().get("time").getAsFloat()+.0001f;
                     float hi=property.equals("bursts")?(float)eventDuration:i==keys.size()-1?1:keys.get(i+1).getAsJsonObject().get("time").getAsFloat()-.0001f;
-                    if(ImGui.dragFloat("Time",t,.005f,lo,hi,"%.3f")) k.addProperty("time",t[0]);EditorHints.tip(property.equals("bursts")?"Birth time in seconds after the layer starts.":"Normalized particle age from birth (0) to death (1). Keys must remain ordered.");ImGui.sameLine();
+                    if(ImGui.sliderFloat("Time",t,lo,hi,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp)) k.addProperty("time",t[0]);EditorHints.tip(property.equals("bursts")?"Birth time in seconds after the layer starts.":"Normalized particle age from birth (0) to death (1). Keys must remain ordered.");ImGui.sameLine();
                     if(property.equals("color")) {float[] c=rgba(k.getAsJsonArray("color"));if(ImGui.colorEdit4("##rgba",c,ImGuiColorEditFlags.NoInputs|ImGuiColorEditFlags.AlphaBar|ImGuiColorEditFlags.AlphaPreviewHalf)) {k.add("color",rgba(c));point=i;}}
-                    else if(property.equals("bursts")) {int[] n={k.get("count").getAsInt()};ImGui.setNextItemWidth(100);if(ImGui.dragInt("Count",n,1,1,2000)) k.addProperty("count",n[0]);}
-                    else {float[] n={k.get("value").getAsFloat()};ImGui.setNextItemWidth(100);if(ImGui.dragFloat("Value",n,.01f,(float)min(),(float)max(),"%.3f")) k.addProperty("value",n[0]);}
+                    else if(property.equals("bursts")) {int[] n={k.get("count").getAsInt()};ImGui.setNextItemWidth(100);if(ImGui.sliderInt("Count",n,1,2000,"%d",imgui.flag.ImGuiSliderFlags.AlwaysClamp)) k.addProperty("count",n[0]);}
+                    else {float[] n={k.get("value").getAsFloat()};ImGui.setNextItemWidth(100);if(ImGui.sliderFloat("Value",n,(float)min(),(float)max(),"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp)) k.addProperty("value",n[0]);}
                     EditorHints.tip(property.equals("color")?EditorHints.description("color",false):property.equals("bursts")?"How many particles this one-shot event emits. The layer supports at most 4000 total burst births.":EditorHints.description(property,false));
                     EditorHints.limits(property.equals("color")?0:property.equals("bursts")?1:min(),property.equals("color")?255:property.equals("bursts")?2000:max());
                     ImGui.textDisabled("Time: "+EditorHints.rangeText(lo,hi));

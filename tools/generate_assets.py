@@ -182,3 +182,12 @@ if __name__ == '__main__':
     png('ring', lambda r: max(0, 1 - abs(r - .65) / .15))
     nova_sheet()
     schema()
+    material = obj({'schemaVersion': {'const': 1}, 'nodes': array(obj({
+        'operation': {'enum': ['dissolve', 'outline', 'fresnel', 'distortion', 'scroll', 'gradient', 'chromatic', 'pixelate']},
+        'amount': number(0, 1, .5), 'speed': number(-10, 10, 1), 'scale': number(1, 64, 8),
+        'color': array(number(0, 1), 4, 4), 'enabled': {'type': 'boolean'},
+        'keys': array(obj({'time': number(0, 1), 'value': number(0, 1)}, ('time', 'value')), 0, 64)
+    }, ('operation',)), 0, 16)}, ('schemaVersion', 'nodes'))
+    material['$schema'] = 'https://json-schema.org/draft/2020-12/schema'
+    material['title'] = "Xirc's VFX image material v1"
+    (ROOT / 'schema/material.schema.json').write_text(json.dumps(material, indent=2) + '\n', encoding='utf-8')

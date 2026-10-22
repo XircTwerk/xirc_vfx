@@ -11,7 +11,7 @@ final class EditorHints {
     private static int ranges,tooltips;
     static int ranges(){return ranges;}
     static int tooltips(){return tooltips;}
-    static Bounds bounds(String key){return switch(key){
+    static Bounds bounds(String key){if(com.xirctwerk.vfx.core.Authoring.NUMERIC.contains(key)){var b=com.xirctwerk.vfx.core.Parameters.bounds(key);return new Bounds(b.min(),b.max());}return switch(key){
         case "size"->new Bounds(.001,10);case "speed"->new Bounds(-50,50);
         case "rotation"->new Bounds(-36000,36000);case "spin"->new Bounds(-3600,3600);
         case "lifetime"->new Bounds(.05,30);case "duration"->new Bounds(.05,300);
@@ -22,7 +22,7 @@ final class EditorHints {
         case "meshScale"->new Bounds(.001,8);case "pixelSize"->new Bounds(1,8);
         case "trailPoints"->new Bounds(2,64);case "seed"->new Bounds(Integer.MIN_VALUE,Integer.MAX_VALUE);
         case "offset","pivot"->new Bounds(-128,128);case "force"->new Bounds(-100,100);
-        case "direction","vortexAxis"->new Bounds(-1,1);case "color"->new Bounds(0,255);
+        case "direction","vortexAxis"->new Bounds(-1,1);case "color"->new Bounds(0,1);
         case "curl"->new Bounds(0,50);case "curlFrequency"->new Bounds(.01,10);case "attractor"->new Bounds(-128,128);
         case "attraction","vortex","vortexPull","wind"->new Bounds(-100,100);case "falloff","stretch"->new Bounds(0,4);
         case "orbitRadius"->new Bounds(0,64);case "orbitSpeed"->new Bounds(-3600,3600);case "pathCycles"->new Bounds(.05,10);case "pathScatter"->new Bounds(0,8);

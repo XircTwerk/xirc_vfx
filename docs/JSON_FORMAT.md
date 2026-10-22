@@ -174,3 +174,5 @@ Tools > Transforms exposes static rotation/scale, a seconds timeline with key se
 ## Library runtime overrides (0.2)
 
 Playback handles and optional server packets reuse the existing numeric `parameters` definitions; override resolution validates a copy and preserves the registered/authored document. Instance position, Euler rotation, uniform scale, tint, pause and fade are runtime state, not new JSON fields. A parameter update restarts only that instance using the same seed. Network definition digests compare canonical object-key ordering while retaining array order. No shader expressions, remote JSON execution or resource transfer were added. SchemaVersion remains 1 and its validation/generator require no new field definitions.
+
+Image materials use a separate bounded data document and [material schema](../schema/material.schema.json), described in [RENDERING_API.md](RENDERING_API.md). They do not change effect schemaVersion 1 or permit imported shader code.

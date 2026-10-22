@@ -16,6 +16,7 @@ final class BloomRenderer {
     private static int blur,combine,vao;
     private static boolean failed;
     private static long frames;
+    private static int pixelGrid=1,screenWidth,screenHeight;
     static long frames() {return frames;}
     static void bindSource() {if(source!=null)source.bindWrite(true);}
     static void render(PoseStack pose,Camera camera) {
@@ -34,8 +35,10 @@ final class BloomRenderer {
         var colorMask=org.lwjgl.BufferUtils.createByteBuffer(4);GL11.glGetBooleanv(GL11.GL_COLOR_WRITEMASK,colorMask);
         try {
             prepare(main.width,main.height);GL11.glDisable(GL11.GL_SCISSOR_TEST);RenderSystem.colorMask(true,true,true,true);
+            var grids=GeometryRenderer.bloomPixels();grids.add(1);screenWidth=main.width;screenHeight=main.height;
+            for(int grid:grids){pixelGrid=grid;com.mojang.blaze3d.vertex.BufferUploader.invalidate();
             source.setClearColor(0,0,0,0);source.clear(Minecraft.ON_OSX);source.copyDepthFrom(main);source.bindWrite(true);
-            VfxRenderer.renderParticles(pose,camera,true);GeometryRenderer.renderBloom(pose,camera);
+            if(grid==1)VfxRenderer.renderParticles(pose,camera,true);GeometryRenderer.renderBloom(pose,camera,grid);
             RenderSystem.disableDepthTest();RenderSystem.depthMask(false);RenderSystem.disableCull();RenderSystem.disableBlend();
             GL30.glBindVertexArray(vao);
             for(int i=0;i<3;i++) {
@@ -44,9 +47,11 @@ final class BloomRenderer {
                 main.bindWrite(true);RenderSystem.enableBlend();RenderSystem.blendFuncSeparate(GL11.GL_ONE,GL11.GL_ONE,GL11.GL_ZERO,GL11.GL_ONE);GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD,GL14.GL_FUNC_ADD);
                 fullscreen(null,vertical[i].getColorTextureId(),combine,0,0,4f/3f);RenderSystem.disableBlend();
             }
+            }
             frames++;
         }catch(Exception e){failed=true;org.slf4j.LoggerFactory.getLogger("XircBloom").error("Bloom disabled after a render failure; base effects remain available",e);}
         finally {
+            com.mojang.blaze3d.vertex.BufferUploader.invalidate();
             GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER,draw);GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER,read);RenderSystem.viewport(viewport[0],viewport[1],viewport[2],viewport[3]);
             RenderSystem.setShader(()->shader);GlStateManager._glUseProgram(program);GL30.glBindVertexArray(oldVao);
             for(int i=0;i<3;i++){RenderSystem.activeTexture(GL13.GL_TEXTURE0+i);RenderSystem.bindTexture(textures[i]);}RenderSystem.activeTexture(active);
@@ -58,7 +63,7 @@ final class BloomRenderer {
     private static void prepare(int width,int height)throws IOException {
         if(blur==0){String vertex="#version 150\nout vec2 texCoord;void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);texCoord=p;gl_Position=vec4(p*2.0-1.0,0,1);}";
             try(var in=BloomRenderer.class.getResourceAsStream("/assets/xirc_vfx_studio/shaders/post/shimmer_blur.fsh")){if(in==null)throw new IOException("Missing bundled Shimmer blur shader");blur=program(vertex,new String(in.readAllBytes(),StandardCharsets.UTF_8));}
-            combine=program(vertex,"#version 150\nuniform sampler2D DiffuseSampler;uniform float Gain;in vec2 texCoord;out vec4 fragColor;void main(){fragColor=vec4(texture(DiffuseSampler,texCoord).rgb*Gain,0);}");vao=GL30.glGenVertexArrays();
+            combine=program(vertex,"#version 150\nuniform sampler2D DiffuseSampler;uniform float Gain;uniform float PixelGrid;uniform vec2 ScreenSize;in vec2 texCoord;out vec4 fragColor;void main(){fragColor=vec4(texture(DiffuseSampler,PixelGrid>1.0?(floor(gl_FragCoord.xy/PixelGrid)*PixelGrid+PixelGrid*0.5)/ScreenSize:texCoord).rgb*Gain,0);}");vao=GL30.glGenVertexArrays();
         }
         if(source==null)source=new TextureTarget(width,height,true,Minecraft.ON_OSX);else if(source.width!=width||source.height!=height)source.resize(width,height,Minecraft.ON_OSX);
         for(int i=0;i<3;i++){int w=Math.max(1,(width+(1<<(i+1))-1)>>(i+1)),h=Math.max(1,(height+(1<<(i+1))-1)>>(i+1));
@@ -68,8 +73,16 @@ final class BloomRenderer {
     }
     private static void fullscreen(TextureTarget target,int texture,int program,float x,float y,float gain) {
         if(target!=null)target.bindWrite(true);GlStateManager._glUseProgram(program);RenderSystem.activeTexture(GL13.GL_TEXTURE0);RenderSystem.bindTexture(texture);GL20.glUniform1i(GL20.glGetUniformLocation(program,"DiffuseSampler"),0);
+        GL20.glUniform1f(GL20.glGetUniformLocation(program,"PixelGrid"),pixelGrid);GL20.glUniform2f(GL20.glGetUniformLocation(program,"ScreenSize"),screenWidth,screenHeight);
         GL20.glUniform1f(GL20.glGetUniformLocation(program,"Gain"),gain);GL20.glUniform2f(GL20.glGetUniformLocation(program,"BlurDir"),x,y);GL20.glUniform1i(GL20.glGetUniformLocation(program,"Radius"),8);
         if(target!=null)GL20.glUniform2f(GL20.glGetUniformLocation(program,"OutSize"),target.width,target.height);GL11.glDrawArrays(GL11.GL_TRIANGLES,0,3);
+    }
+    static void smokeGrid()throws IOException {try(var state=new com.xirctwerk.vfx.api.render.RenderState();var pipeline=new com.xirctwerk.vfx.api.render.RenderPipeline()){
+        prepare(64,64);int input=pipeline.preview(64,64,1,.4);var output=new TextureTarget(64,64,false,Minecraft.ON_OSX);try{
+            RenderSystem.disableBlend();RenderSystem.disableDepthTest();RenderSystem.disableCull();GL11.glDisable(GL11.GL_SCISSOR_TEST);RenderSystem.colorMask(true,true,true,true);GL30.glBindVertexArray(vao);pixelGrid=4;screenWidth=screenHeight=64;
+            fullscreen(output,input,combine,0,0,1);var data=org.lwjgl.BufferUtils.createByteBuffer(64*64*4);GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER,output.frameBufferId);GL11.glReadPixels(0,0,64,64,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,data);int lit=0;
+            for(int y=0;y<64;y++)for(int x=0;x<64;x++){int i=(y*64+x)*4,b=((y/4*4)*64+x/4*4)*4;for(int c=0;c<3;c++){if(data.get(i+c)!=data.get(b+c))throw new IllegalStateException("Bloom halo escaped its pixel grid");if(data.get(i+c)!=0)lit++;}}if(lit==0)throw new IllegalStateException("Bloom grid test produced an empty image");
+        }finally{output.destroyBuffers();}}
     }
     private static int program(String vertex,String fragment)throws IOException {
         int v=compile(GL20.GL_VERTEX_SHADER,vertex),f=0,p=0;try{f=compile(GL20.GL_FRAGMENT_SHADER,fragment);p=GL20.glCreateProgram();GL20.glAttachShader(p,v);GL20.glAttachShader(p,f);GL20.glLinkProgram(p);if(GL20.glGetProgrami(p,GL20.GL_LINK_STATUS)==0)throw new IOException(GL20.glGetProgramInfoLog(p));return p;}catch(IOException e){if(p!=0)GL20.glDeleteProgram(p);throw e;}finally{GL20.glDeleteShader(v);if(f!=0)GL20.glDeleteShader(f);}

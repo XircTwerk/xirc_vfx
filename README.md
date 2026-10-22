@@ -6,7 +6,7 @@ The library owns the JSON engine, deterministic simulation, transform hierarchy,
 
 ## Install
 
-Use the matching `xirc_vfx-fabric-0.2.0.jar` or `xirc_vfx-neoforge-0.2.0.jar` from [Releases](https://github.com/XircTwerk/xirc_vfx/releases). Fabric also needs Fabric API. The library registers rendering/ticking once. It does not take the V key; a host mod can open the optional editor explicitly. `/xvfx` supplies local authoring/playback commands.
+Use the matching `xirc_vfx-fabric-0.3.0.jar` or `xirc_vfx-neoforge-0.3.0.jar` from [Releases](https://github.com/XircTwerk/xirc_vfx/releases). Fabric also needs Fabric API. The library registers rendering/ticking once. It does not take the V key; a host mod can open the optional editor explicitly. `/xvfx` supplies local authoring/playback commands.
 
 ## Gradle dependency
 
@@ -19,12 +19,12 @@ repositories {
     maven { url = 'https://maven.fabricmc.net/' } // Fabric consumers
 }
 // Fabric Loom:
-dependencies { modImplementation 'com.xirctwerk.vfx:xirc_vfx-fabric:0.2.0' }
-// NeoForge: implementation 'com.xirctwerk.vfx:xirc_vfx-neoforge:0.2.0'
-// Pure Java: implementation 'com.xirctwerk.vfx:xirc_vfx-core:0.2.0'
+dependencies { modImplementation 'com.xirctwerk.vfx:xirc_vfx-fabric:0.3.0' }
+// NeoForge: implementation 'com.xirctwerk.vfx:xirc_vfx-neoforge:0.3.0'
+// Pure Java: implementation 'com.xirctwerk.vfx:xirc_vfx-core:0.3.0'
 ```
 
-Declare `xirc_vfx >=0.2.0` as a loader dependency. Loader jars contain the engine, optional editor and nested UI runtime; pure core automatically resolves Gson. Do not install the core jar beside a loader jar. See [API and compatibility policy](docs/LIBRARY_API.md) for full host setup and 0.x version guarantees.
+Declare `xirc_vfx >=0.3.0` as a loader dependency. Loader jars contain the engine, optional editor and nested UI runtime; pure core automatically resolves Gson. Do not install the core jar beside a loader jar. See [API and compatibility policy](docs/LIBRARY_API.md) for full host setup and 0.x version guarantees.
 
 ## Client API
 
@@ -58,3 +58,9 @@ On Linux use `bash gradlew`. Both loader jars and source jars are built from the
 ## Licensing
 
 Original project code and original generated sprites/presets: copyright 2026 **XircTwerk**, MIT. Bundled third-party components retain their own licenses and copyright notices; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). This attribution does not designate third-party authors as authors or maintainers of Xirc's VFX.
+
+Developed with assistance from AI coding tools.
+
+Rendering and shader authoring: [RENDERING_API.md](docs/RENDERING_API.md).
+
+![Materials and shader workspace](docs/images/materials-workspace.png)

@@ -34,7 +34,7 @@ Selected starting targets are Fabric Loader 0.19.5 + Fabric API 0.116.17+1.21.1 
 | Texture / material | Explicit PNG references; alpha/additive, emissive base, bounded world bloom and row-major sprite sheets |
 | Seed | Fixed seeded Java Random; fixed 20 Hz simulation |
 | Resource package | Bounded `.xvfx` ZIP export/import; persistent local PNG resources |
-| Pixelization | Procedural geometry only: scale 1-8, nearest-upscaled framebuffer and world-grid snap; separate effect-only bloom; no arbitrary shader graph or dynamic lights |
+| Pixelization | Procedural geometry only: scale 1-8, nearest-upscaled framebuffer and world-grid snap; per-pixel-size effect-only bloom with matching halo grid; no dynamic lights |
 | Mesh primitives | Slash, ring, cube, sphere; unlit colored geometry; filled display and world rendering, optional display wireframe |
 | Code API / animated endpoint trails | Client Java callbacks and arbitrary quad meshes; smooth Catmull-Rom base/tip ribbons; see CODE_API.md |
 | Animated mesh extents / lightning | Mesh scale constants/ranges/curves and bounded deterministic animated lightning ribbons; shared display/world geometry |
@@ -85,3 +85,7 @@ Tools > Transforms provides identity-parent grouping, static rotation/scale, and
 ## Library integration in 0.2
 
 Public Maven artifacts with dependency metadata; client JSON/code handles (move/rotate/scale/tint/pause/fade/stop), explicit entity target-loss policies, validated numeric parameter overrides, built-in opt-in integration demos and per-owner renderer CPU/submission diagnostics with session budgets. See [Library API](LIBRARY_API.md). Code callbacks/trails remain local. The server API contains no Minecraft client references. GPU timing is not implemented.
+
+## Rendering library 0.3 additions
+
+Reusable render targets, typed trusted Java shaders, ordered Java render graphs and data-only image materials are implemented. Studio provides a Materials / Shaders workspace, three primitive previews, world post stack, amount keys, reorder/mute, presets and JSON export. See [RENDERING_API.md](RENDERING_API.md) for precise limits and verification scope. Full branching visual graphs and physical surface materials remain future work.

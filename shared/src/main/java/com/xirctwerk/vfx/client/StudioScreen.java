@@ -86,7 +86,7 @@ public final class StudioScreen extends Screen {
     @Override public void renderBackground(GuiGraphics g,int x,int y,float delta) {}
     @Override public void render(GuiGraphics g,int x,int y,float delta) {g.flush();nativeUi.backend.frame(nativeUi::draw);}
     @Override public void onClose() {super.onClose();}
-    @Override public void removed() {nativeUi.finishGesture();nativeUi.backend.release();studio.stopEditorPreview();worldPreview=false;previewDrag=-1;}
+    @Override public void removed() {nativeUi.materials.close();nativeUi.finishGesture();nativeUi.backend.release();studio.stopEditorPreview();worldPreview=false;previewDrag=-1;}
     private boolean inPreview(double x,double y) {return (nativeUi.hovered||Boolean.getBoolean("xirc.smokeTest"))&&x>=px&&x<px+pw&&y>=py&&y<py+ph;}
     @Override public boolean mouseClicked(double x,double y,int button) {nativeUi.backend.mouse(button,true);if((button==0||button==1)&&inPreview(x,y)) {previewDrag=button;pressX=x;pressY=y;dragDistance=0;}return true;}
     @Override public boolean mouseReleased(double x,double y,int button) {nativeUi.backend.mouse(button,false);if(worldPreview&&button==0&&previewDrag==0&&dragDistance<4&&inPreview(x,y))attempt(()->placeWorld(x,y));if(previewDrag==button) previewDrag=-1;return true;}
@@ -205,6 +205,7 @@ public final class StudioScreen extends Screen {
         else onClose();
     }
     private JsonObject toolsSmokeBefore,toolsSmokeFixture;
+    void smokeMaterials(int stage)throws Exception{nativeUi.materials.smoke(stage,studio.files);}
     void smokeTools(int stage){
         if(stage==0){nativeUi.finishGesture();toolsSmokeBefore=project.json();var fixture=Templates.newProject("tools_smoke");Authoring.duplicate(fixture,Authoring.ids(fixture));project.replace(fixture);toolsSmokeFixture=project.json();selected=0;selectLayers(Authoring.ids(fixture));nativeUi.tools.smokeOpen();changed();}
         else if(stage==1)nativeUi.backend.testPointer(nativeUi.tools.relativeX,nativeUi.tools.relativeY,true);
@@ -327,6 +328,7 @@ public final class StudioScreen extends Screen {
         final PropertyEditor propertyEditor=new PropertyEditor();
         final TimelineEditor timeline=new TimelineEditor();
         final EditorTools tools=new EditorTools();
+        final MaterialEditor materials=new MaterialEditor();
         final TextHistory draftHistory=new TextHistory();
         boolean resetJsonInput;long lastDraftEdit;
         boolean ready,hovered,reset,jsonOpen,focusJson,jsonActive,jsonFocused;
@@ -385,7 +387,7 @@ public final class StudioScreen extends Screen {
                 if(ImGui.beginMenu("Edit")) {if(ImGui.menuItem("Undo","Ctrl+Z")) history(false);if(ImGui.menuItem("Redo","Ctrl+Y")) history(true);ImGui.endMenu();}
                 if(ImGui.beginMenu("Help")) {if(ImGui.menuItem("Making effects"))guideOpen.set(true);
                     if(ImGui.beginMenu("Built-in integration examples")){for(String name:com.xirctwerk.vfx.api.IntegrationExamples.NAMES)if(ImGui.menuItem(name.replace('_',' ')))attempt(()->com.xirctwerk.vfx.api.IntegrationExamples.start(name));if(ImGui.menuItem("Stop examples"))com.xirctwerk.vfx.api.IntegrationExamples.stop();ImGui.endMenu();}ImGui.endMenu();}
-                if(ImGui.beginMenu("View")) {if(ImGui.menuItem("Tools / command palette","Ctrl+P",tools.open.get()))tools.open.set(!tools.open.get());if(ImGui.menuItem("JSON editor",null,jsonOpen)) openJson();if(ImGui.menuItem("Timeline",null,timeline.open.get()))timeline.open.set(!timeline.open.get());if(ImGui.menuItem("Reset layout")) reset=true;if(ImGui.menuItem("Replay display",null,previewLoop)) previewLoop=!previewLoop;if(ImGui.menuItem("Wireframe meshes",null,wireframe))wireframe=!wireframe;if(ImGui.menuItem("Change display background")) background=(background+1)%3;ImGui.endMenu();}
+                if(ImGui.beginMenu("View")) {if(ImGui.menuItem("Materials / Shaders",null,materials.open.get()))materials.open.set(!materials.open.get());if(ImGui.menuItem("Tools / command palette","Ctrl+P",tools.open.get()))tools.open.set(!tools.open.get());if(ImGui.menuItem("JSON editor",null,jsonOpen)) openJson();if(ImGui.menuItem("Timeline",null,timeline.open.get()))timeline.open.set(!timeline.open.get());if(ImGui.menuItem("Reset layout")) reset=true;if(ImGui.menuItem("Replay display",null,previewLoop)) previewLoop=!previewLoop;if(ImGui.menuItem("Wireframe meshes",null,wireframe))wireframe=!wireframe;if(ImGui.menuItem("Change display background")) background=(background+1)%3;ImGui.endMenu();}
                 ImGui.sameLine();ImGui.textDisabled(project.effect().name()+(savedJson==null||!savedJson.equals(project.json())?" *":""));ImGui.endMainMenuBar();
             }
             var vp=ImGui.getMainViewport();
@@ -451,6 +453,7 @@ public final class StudioScreen extends Screen {
                     String previousDraft=json.get();if(ImGui.inputTextMultiline("##json"+jsonRevision,json,-1,-1,ImGuiInputTextFlags.AllowTabInput)){long now=System.nanoTime();boolean typing=Math.abs(previousDraft.length()-json.get().length())==1;draftHistory.record(json.get(),typing&&now-lastDraftEdit<750_000_000L);lastDraftEdit=typing?now:0;}
                     jsonActive=ImGui.isItemActive();jsonFocused=ImGui.isWindowFocused(ImGuiFocusedFlags.RootAndChildWindows);jsonTextX=ImGui.getItemRectMinX()+35;jsonTextY=ImGui.getItemRectMinY()+35;}ImGui.end();jsonOpen=opened.get();
             }
+            materials.render(studio.files);
             timeline.render(project,selected,i->selectLayer(i,false),StudioScreen.this::timelineChanged,StudioScreen.this::seek,viewedSimulation().time(),previewHorizon(),seekTarget>=0,this::editProperty);
             tools.render(new EditorTools.Frame(project,selectedIds(),viewedSimulation(),studio.files,StudioScreen.this::toolsEdit,StudioScreen.this::selectLayers,StudioScreen.this::seek,StudioScreen.this::toolsCommand,previewHorizon(),playbackSpeed,value->{playbackSpeed=value;playbackCarry=0;}));
             dialogs();propertyEditor.render();
@@ -498,15 +501,16 @@ public final class StudioScreen extends Screen {
             else if(value.isJsonPrimitive()&&value.getAsJsonPrimitive().isBoolean()) {var v=new ImBoolean(value.getAsBoolean());if(ImGui.checkbox(label,v)) next=new JsonPrimitive(v.get());}
             else if(Set.of("kind","shape","space","blend").contains(key)) {var choices=switch(key) {case "kind"->List.of("particle","beam","trail","slash","ring_mesh","cube_mesh","sphere_mesh","lightning");case "shape"->List.of("point","sphere","ring","spiral","cone","box");case "blend"->List.of("alpha","additive");default->List.of("local","world");};if(ImGui.beginCombo(label,value.getAsString())) {for(String choice:choices) if(ImGui.selectable(choice,choice.equals(value.getAsString()))) next=new JsonPrimitive(choice);ImGui.endCombo();}}
             else if(value.isJsonPrimitive()&&value.getAsJsonPrimitive().isString()) {String initial=value.getAsString();var text=strings.computeIfAbsent(id,k->new ImString(initial,2048));if(ImGui.inputText(label,text,ImGuiInputTextFlags.EnterReturnsTrue)) next=new JsonPrimitive(text.get());EditorHints.tip(EditorHints.description(key,root)+"\nPress Enter to apply.");}
-            else if(value.isJsonArray()) {var a=value.getAsJsonArray();float[] v=new float[key.equals("color")?4:3];for(int i=0;i<v.length;i++) v[i]=i<a.size()?a.get(i).getAsFloat():1;boolean edited=key.equals("color")?ImGui.colorEdit4(label,v):ImGui.dragFloat3(label,v,.01f,(float)bounds.min(),(float)bounds.max());if(edited) {var a2=new JsonArray();for(float n:v) a2.add(n);next=a2;}}
-            else if(Set.of("seed","pixelSize","trailPoints").contains(key)) {int[] v={value.getAsInt()};if(ImGui.dragInt(label,v,1,(int)bounds.min(),(int)bounds.max())) next=new JsonPrimitive(v[0]);}
-            else {float[] v={value.getAsFloat()};if(ImGui.dragFloat(label,v,key.equals("rotation")||key.equals("spin")?1:.01f,(float)bounds.min(),(float)bounds.max(),"%.3f")) next=new JsonPrimitive(v[0]);}
+            else if(value.isJsonArray()) {var a=value.getAsJsonArray();float[] v=new float[key.equals("color")?4:3];for(int i=0;i<v.length;i++) v[i]=i<a.size()?a.get(i).getAsFloat():1;boolean edited=key.equals("color")?ImGui.colorEdit4(label,v,imgui.flag.ImGuiColorEditFlags.Float):ImGui.sliderFloat3(label,v,(float)bounds.min(),(float)bounds.max(),"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp);if(edited) {var a2=new JsonArray();for(float n:v) a2.add(n);next=a2;}}
+            else if(key.equals("seed")){var v=new ImInt(value.getAsInt());if(ImGui.inputInt(label,v))next=new JsonPrimitive(v.get());}
+            else if(Set.of("pixelSize","trailPoints").contains(key)) {int[] v={value.getAsInt()};if(ImGui.sliderInt(label,v,(int)bounds.min(),(int)bounds.max(),"%d",imgui.flag.ImGuiSliderFlags.AlwaysClamp)) next=new JsonPrimitive(v[0]);}
+            else {float[] v={value.getAsFloat()};if(ImGui.sliderFloat(label,v,(float)bounds.min(),(float)bounds.max(),"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp)) next=new JsonPrimitive(v[0]);}
             EditorHints.tip(EditorHints.description(key,root)+(bounds==null?"":"\n"+EditorHints.rangeText(bounds.min(),bounds.max())+"\nDrag to edit; Ctrl+click to type."));
             if(key.equals("size")&&!root) {dragX=(ImGui.getItemRectMinX()+ImGui.getItemRectMaxX())/2;dragY=(ImGui.getItemRectMinY()+ImGui.getItemRectMaxY())/2;}
             if(bounds!=null&&!value.isJsonObject())EditorHints.limits(bounds.min(),bounds.max());
             if(!root&&Set.of("size","speed","rotation","lifetime","meshScale").contains(key)&&!value.isJsonObject()) {if(EditorHints.smallButton(key.equals("lifetime")?"Random range...":"Curve / range...")) editProperty(key,value);EditorHints.tip("Edit a constant, random range, or supported lifetime curve without changing other properties.");}
             else if(!root&&key.equals("color")&&value.isJsonArray()) {if(EditorHints.smallButton("Gradient...")) editProperty(key,value);}
-            if(next!=null) {var replacement=next;attempt(()->{if(!gesture.equals(id)) {finishGesture();project.beginEdit();gesture=id;}project.edit(o->{if(root)o.add(key,replacement);else for(String target:selectedIds()){var e=Authoring.layer(o,target);e.add(key,replacement.deepCopy());if(key.equals("kind")&&!Geometry.supports(replacement.getAsString()))e.addProperty("pixelSize",1);}});changed();});}
+            if(next!=null) {var replacement=next;attempt(()->{if(!gesture.equals(id)) {finishGesture();project.beginEdit();gesture=id;}project.edit(o->{if(root)o.add(key,replacement);else if(key.equals("kind"))Authoring.changeKind(o,selectedIds(),replacement.getAsString());else Authoring.set(o,selectedIds(),key,replacement);});changed();});}
             if(gesture.equals(id)&&!ImGui.isAnyItemActive()) finishGesture();ImGui.popID();
         }
         void finishGesture() {timeline.finish(project);project.endEdit();gesture="";}
@@ -516,8 +520,8 @@ public final class StudioScreen extends Screen {
             if(!layer.has("textureAnimation"))return;var animation=layer.getAsJsonObject("textureAnimation");
             for(String key:List.of("columns","rows","frames","fps","loop")) {JsonElement next=null;
                 if(key.equals("loop")){var value=new ImBoolean(animation.has(key)?animation.get(key).getAsBoolean():true);if(EditorHints.checkbox("Loop frames",value))next=new JsonPrimitive(value.get());}
-                else if(key.equals("fps")){float[] value={animation.has(key)?animation.get(key).getAsFloat():20};if(ImGui.dragFloat("Frames/sec",value,.1f,.1f,120))next=new JsonPrimitive(value[0]);}
-                else {int[] value={animation.has(key)?animation.get(key).getAsInt():1};if(ImGui.dragInt(key,value,1,1,key.equals("frames")?Math.min(4096,(animation.has("columns")?animation.get("columns").getAsInt():1)*(animation.has("rows")?animation.get("rows").getAsInt():1)):64))next=new JsonPrimitive(value[0]);}
+                else if(key.equals("fps")){float[] value={animation.has(key)?animation.get(key).getAsFloat():20};if(ImGui.sliderFloat("Frames/sec",value,.1f,120,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp))next=new JsonPrimitive(value[0]);}
+                else {int[] value={animation.has(key)?animation.get(key).getAsInt():1};if(ImGui.sliderInt(key,value,1,key.equals("frames")?Math.min(4096,(animation.has("columns")?animation.get("columns").getAsInt():1)*(animation.has("rows")?animation.get("rows").getAsInt():1)):64,"%d",imgui.flag.ImGuiSliderFlags.AlwaysClamp))next=new JsonPrimitive(value[0]);}
                 EditorHints.tip(switch(key){case "columns"->"Equal-width cells across the PNG atlas.";case "rows"->"Equal-height cells down the PNG atlas.";case "frames"->"Frames to play, at most columns multiplied by rows.";case "fps"->"Sprite-sheet frames advanced per second.";default->"Repeat the atlas or hold its final frame.";});
                 if(!key.equals("loop"))EditorHints.limits(key.equals("fps")?.1:1,key.equals("fps")?120:key.equals("frames")?Math.min(4096,(animation.has("columns")?animation.get("columns").getAsInt():1)*(animation.has("rows")?animation.get("rows").getAsInt():1)):64);
                 if(next!=null){var value=next;attempt(()->{finishGesture();project.edit(o->o.getAsJsonArray("emitters").get(selected).getAsJsonObject().getAsJsonObject("textureAnimation").add(key,value));changed();});}

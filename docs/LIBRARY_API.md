@@ -1,4 +1,4 @@
-# Xirc's VFX integration API — 0.2
+# Xirc's VFX integration API — 0.3
 
 ## Dependency and compatibility
 
@@ -11,14 +11,14 @@ repositories {
     maven { url = 'https://maven.fabricmc.net/' } // Fabric integrations
 }
 // Fabric Loom:
-dependencies { modImplementation 'com.xirctwerk.vfx:xirc_vfx-fabric:0.2.0' }
-// NeoForge: implementation 'com.xirctwerk.vfx:xirc_vfx-neoforge:0.2.0'
-// Java tools: implementation 'com.xirctwerk.vfx:xirc_vfx-core:0.2.0'
+dependencies { modImplementation 'com.xirctwerk.vfx:xirc_vfx-fabric:0.3.0' }
+// NeoForge: implementation 'com.xirctwerk.vfx:xirc_vfx-neoforge:0.3.0'
+// Java tools: implementation 'com.xirctwerk.vfx:xirc_vfx-core:0.3.0'
 ```
 
 POMs and Gradle module metadata declare dependencies; pure core automatically brings Gson. Loader jars include the core and nested UI libraries. Do not add the pure-core jar alongside a loader jar. Declare the mod ID `xirc_vfx` in your loader manifest. Fabric's full `modImplementation` runtime variant supplies development UI dependencies through Maven metadata. Studio demonstrates an alternative: mapped compile-only access plus loading the complete library mod from the run's mods folder (runtime staging configuration is non-transitive).
 
-Version policy: 0.x minor versions may change Java API signatures; recompile when moving from 0.1 to 0.2. Patch releases within 0.2 preserve public API source/binary compatibility unless a security correction is explicitly documented. `com.xirctwerk.vfx.api` and `core` are the supported integration surfaces; `client` classes are implementation details. JSON schemaVersion 1 stays unchanged. Wire protocol v1 is versioned separately. Pin versions; no dynamic `+` dependencies.
+Version policy: 0.x minor versions may change Java API signatures; recompile when moving between minor versions. Patch releases within 0.3 preserve public API source/binary compatibility unless a security correction is explicitly documented. `com.xirctwerk.vfx.api` and `core` are the supported integration surfaces; `client` classes are implementation details. JSON schemaVersion 1 stays unchanged. Wire protocol v1 is versioned separately. Pin versions; no dynamic `+` dependencies.
 
 Maintainership: XircTwerk only. Original code MIT; required third-party notices retained. To stage publication: `gradlew.bat :core:test build stageRelease stageMaven`. `build/maven` contains the standard Maven repository with binary/source jars, POMs, module metadata and checksums. Released version directories are immutable; publish a new version for changed bytes.
 
@@ -100,3 +100,5 @@ Use Help > Built-in integration examples or these client commands:
 Tools > Diagnostics and `/xvfx profile` expose per-effect live particles, submitted quads, actual draw-batch submissions and CPU microseconds for simulation/render submission. Counts include repeated sprite and geometry bloom submissions; procedural geometry has independently attributed batches. Values describe the last rendered frame, not GPU completion or a hardware benchmark. Code visuals and ribbon trails appear as separate owners. CPU geometry generation and draw submission are measured; shared fullscreen bloom/filter/upscale overhead and GPU/driver execution are not attributed to individual effects.
 
 `VfxPerformance.configure(new Limits(instances, particles, quads))` applies client session budgets: 1..16 JSON instances, 1..8192 combined live particles, 1..32768 estimated JSON mesh quads. The Diagnostics sliders expose these same controls. Applying limits stops current world playback to avoid violating the new budget. JSON budgets are checked before allocation/parameter replacement and particles are capped during simulation. The geometry submission ceiling is twice the configured quad budget (at most 65536), with overflowing code callbacks/trails stopped. Low settings can intentionally reject complex effects. Definitions and editor documents are never rewritten to fit a budget.
+
+See [RENDERING_API.md](RENDERING_API.md) for render targets, trusted shaders, materials and Studio authoring.

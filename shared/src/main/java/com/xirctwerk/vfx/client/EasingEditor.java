@@ -20,7 +20,7 @@ final class EasingEditor {
             for(int i=0;i<2;i++){float cx=x+w*controls.get(i*2).getAsFloat(),cy=y+h-h*controls.get(i*2+1).getAsFloat();d.addLine(x+w*i,y+h-h*i,cx,cy,ImGui.getColorU32(ImGuiCol.TextDisabled));d.addCircleFilled(cx,cy,5,ImGui.getColorU32(ImGuiCol.PlotHistogram));}
             if(ImGui.isItemActivated()){activeId=id;double best=Double.MAX_VALUE;for(int i=0;i<2;i++){double distance=Math.hypot(ImGui.getMousePosX()-x-w*controls.get(i*2).getAsFloat(),ImGui.getMousePosY()-y-h+h*controls.get(i*2+1).getAsFloat());if(distance<best){best=distance;activeHandle=i;}}}
             if(ImGui.isItemActive()&&activeId==id&&ImGui.isMouseDragging(0)){controls.set(activeHandle*2,new JsonPrimitive(Math.max(0,Math.min(1,(ImGui.getMousePosX()-x)/w))));controls.set(activeHandle*2+1,new JsonPrimitive(Math.max(0,Math.min(1,1-(ImGui.getMousePosY()-y)/h))));changed=true;}
-            float[] c=new float[4];for(int i=0;i<4;i++)c[i]=controls.get(i).getAsFloat();if(ImGui.dragFloat4("Handles x/y",c,.01f,0,1,"%.2f")){for(int i=0;i<4;i++)controls.set(i,new JsonPrimitive(c[i]));changed=true;}EditorHints.limits(0,1);
+            float[] c=new float[4];for(int i=0;i<4;i++)c[i]=controls.get(i).getAsFloat();if(ImGui.sliderFloat4("Handles x/y",c,0,1,"%.2f",imgui.flag.ImGuiSliderFlags.AlwaysClamp)){for(int i=0;i<4;i++)controls.set(i,new JsonPrimitive(c[i]));changed=true;}EditorHints.limits(0,1);
         }
         return changed;
     }

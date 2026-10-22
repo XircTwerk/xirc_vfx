@@ -15,6 +15,7 @@ public final class VfxRenderer {
         renderParticles(pose,camera,false);
         GeometryRenderer.render(pose,camera);
         BloomRenderer.render(pose,camera);
+        com.xirctwerk.vfx.api.render.RenderEffects.renderWorld();
         renderPivot(pose,camera);
     }
     private static void renderPivot(PoseStack pose,Camera camera){

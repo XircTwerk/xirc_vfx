@@ -36,6 +36,7 @@ final class LibrarySmokeTest {
         }
         if(ticks==20)entity.discard();
         if(ticks==28){require(!stopped.alive()&&!fading.alive()&&detached.alive(),"Attachment missing-target policies failed");detached.stop();LOG.info("XIRC_SMOKE_ATTACHMENTS_PASSED");}
+        if(ticks==29)RenderSmokeTest.run();
         if(ticks==30)Vfx.slash(()->origin,new Vec(0,0,1),2,.2,1,new Vfx.Style(new Color(.3,.7,1,1),2,1)).move(origin).rotate(new Vec(0,20,0)).scale(1.2).tint(new Color(1,.5,1,1)).pause(false).fadeOut(.5);
         if(ticks==40){VfxClient.INSTANCE.stop();IntegrationExamples.start("weapon_trail");}
         if(ticks==60){require(!VfxPerformance.snapshot().isEmpty(),"Renderer profile contains no effects");require(VfxPerformance.snapshot().stream().anyMatch(r->r.drawCalls()>0&&r.renderCpuMicros()>0),"Renderer did not record actual submissions");}
@@ -61,7 +62,11 @@ final class LibrarySmokeTest {
             accepted=VfxNetworkClient.accepted();serverError=null;mc.getSingleplayerServer().execute(()->{try{var player=mc.getSingleplayerServer().getPlayerList().getPlayers().getFirst();network=VfxServer.attach(player,ResourceLocation.parse("xirc_vfx:example/projectile"),new Vec(0,1,0),64,88,Map.of("power",1.));}catch(Throwable error){serverError=error;}});
         }
         if(ticks==260){if(serverError!=null)throw new IllegalStateException("Network attachment failed",serverError);require(VfxNetworkClient.accepted()>accepted,"Network attachment was not accepted");require(VfxClient.INSTANCE.playbacks().stream().anyMatch(p->p.anchor().get().add(VfxClient.vec(mc.player.position()).scale(-1)).length()<2),"Network attachment did not follow the player");mc.getSingleplayerServer().execute(()->network.stop());}
-        if(ticks==275){require(VfxClient.INSTANCE.playbacks().isEmpty(),"Server attachment stop leaked playback");LOG.info("XIRC_SMOKE_NETWORK_PASSED");LOG.info("XIRC_SMOKE_LIBRARY_API_PASSED");return true;}
+        if(ticks==275){require(VfxClient.INSTANCE.playbacks().isEmpty(),"Server attachment stop leaked playback");LOG.info("XIRC_SMOKE_NETWORK_PASSED");LOG.info("XIRC_SMOKE_LIBRARY_API_PASSED");mc.setScreen(new StudioScreen());}
+        try{if(ticks==280)((StudioScreen)mc.screen).smokeMaterials(0);
+        if(ticks==300){((StudioScreen)mc.screen).smokeMaterials(1);StudioSmokeTest.capture("studio-materials-shaders.png");}
+        if(ticks==310){((StudioScreen)mc.screen).smokeMaterials(2);mc.setScreen(null);LOG.info("XIRC_SMOKE_MATERIAL_WORKSPACE_PASSED");return true;}}
+        catch(Exception e){throw new IllegalStateException("Material workspace smoke failed",e);}
         return false;
     }
 }

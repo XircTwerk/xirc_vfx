@@ -64,7 +64,7 @@ public final class VfxClient {
         try {
             files=new EffectFiles(directory);
             var existing=files.list(); for(String name:Templates.ALL_NAMES) if(!existing.contains(name)) files.save(name,Templates.create(name));
-            for(String doc:List.of("AGENTS.md","schema/effect.schema.json","docs/AGENT_AUTHORING.md","docs/JSON_FORMAT.md")) {
+            for(String doc:List.of("AGENTS.md","schema/effect.schema.json","schema/material.schema.json","docs/AGENT_AUTHORING.md","docs/JSON_FORMAT.md","docs/RENDERING_API.md")) {
                 try(InputStream in=VfxClient.class.getResourceAsStream("/studio_authoring/"+doc)) { if(in!=null) files.writeAuthoringDocument(doc,in); }
             }
         } catch(IOException e) { throw new IllegalStateException("Cannot initialize Studio projects",e); }
@@ -173,7 +173,7 @@ public final class VfxClient {
         StudioSmokeTest.tick();
         com.xirctwerk.vfx.api.Vfx.tick();
         VfxNetworkClient.tick();com.xirctwerk.vfx.api.IntegrationExamples.tick();
-        var mc=Minecraft.getInstance();if(mc.level!=level) { active.forEach(p->p.controls.stop());active.clear();editorPreview=null;GeometryRenderer.release();level=mc.level; }
+        var mc=Minecraft.getInstance();if(mc.level!=level) { active.forEach(p->p.controls.stop());active.clear();editorPreview=null;GeometryRenderer.release();BloomRenderer.release();com.xirctwerk.vfx.api.render.RenderEffects.world(null);level=mc.level; }
         if(mc.level==null||mc.isPaused()) return;
         int budget=com.xirctwerk.vfx.api.VfxPerformance.limits().particles()-(editorPreview==null?0:(int)Math.ceil(EffectCodec.estimatedParticles(editorPreview.simulation().effect())));
         for(Iterator<Playback> it=active.iterator();it.hasNext();) {

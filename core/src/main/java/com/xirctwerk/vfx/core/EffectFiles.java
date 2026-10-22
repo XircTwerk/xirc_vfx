@@ -11,6 +11,8 @@ public final class EffectFiles {
     public interface Resources { byte[] read(String resource) throws IOException; }
     private final Path root;
     public EffectFiles(Path root) throws IOException { Files.createDirectories(root); this.root=root.toRealPath(); Files.createDirectories(this.root.resolve("effects")); Files.createDirectories(this.root.resolve("exports")); Files.createDirectories(safe("imports")); }
+    public void saveMaterial(String name,JsonObject json)throws IOException {Material.compile(json);if(!name.matches("[a-z][a-z0-9_]{0,63}"))throw new IOException("Use a lowercase material filename.");Path target=safe("materials/"+name+".json");Files.createDirectories(target.getParent());String text=EffectCodec.GSON.toJson(json);if(text.length()>65536)throw new IOException("Material exceeds 64 KiB.");Path temp=Files.createTempFile(target.getParent(),"material-",".tmp");try{Files.writeString(temp,text);Files.move(temp,target,StandardCopyOption.REPLACE_EXISTING);}finally{Files.deleteIfExists(temp);}}
+    public JsonObject loadMaterial(String name)throws IOException {if(!name.matches("[a-z][a-z0-9_]{0,63}"))throw new IOException("Use a lowercase material filename.");Path target=safe("materials/"+name+".json");if(!Files.isRegularFile(target,LinkOption.NOFOLLOW_LINKS)||Files.size(target)>65536)throw new IOException("Material must be a regular JSON file up to 64 KiB.");var json=EffectCodec.parseObject(Files.readString(target));Material.compile(json);return json;}
     public Path root() { return root; }
     public PhotonImporter.Result importPhotonPath(Path chosen,boolean substituteTextures) throws IOException {
         if(!chosen.isAbsolute())throw new IOException("Choose an absolute .fx file path.");

@@ -26,7 +26,7 @@ sourceSets.main.resources.srcDir rootProject.file('shared/src/main/resources')
 processResources {
     inputs.property 'version', project.version; filesMatching('fabric.mod.json') { expand version: project.version }
     from(rootProject.file('schema')) { into 'studio_authoring/schema' }
-    from(rootProject.file('docs')) { include 'AGENT_AUTHORING.md', 'JSON_FORMAT.md'; into 'studio_authoring/docs' }
+    from(rootProject.file('docs')) { include 'AGENT_AUTHORING.md', 'JSON_FORMAT.md', 'RENDERING_API.md'; into 'studio_authoring/docs' }
     from(rootProject.file('docs/RUNTIME_AGENTS.md')) { rename { 'AGENTS.md' }; into 'studio_authoring' }
 }
 jar { from(rootProject.file('LICENSE')) }
@@ -40,6 +40,7 @@ tasks.matching { it.name == 'runClient' }.configureEach {
             if (!log.contains('XIRC_SMOKE_PARAMETERS_PASSED')) throw new GradleException('Parameter controls smoke check failed')
             if (!log.contains('XIRC_SMOKE_WORKBENCH_PASSED')) throw new GradleException('Workbench smoke check failed')
             if (!log.contains('XIRC_SMOKE_CLOUDS_PASSED')) throw new GradleException('Cloud composition smoke check failed')
+            if (!log.contains('XIRC_SMOKE_RENDER_MATERIALS_PASSED') || !log.contains('XIRC_SMOKE_MATERIAL_WORKSPACE_PASSED')) throw new GradleException('Rendering/material workspace smoke check failed')
             if (!log.contains('XIRC_SMOKE_CONTROL_HINTS_PASSED')) throw new GradleException('Control hints smoke check failed')
             if (!log.contains('XIRC_SMOKE_AUTHORING_SHORTCUTS_PASSED') || !log.contains('XIRC_SMOKE_PIVOT_PLACEMENT_PASSED')) throw new GradleException('Authoring/placement smoke check failed')
             if (!log.contains('XIRC_SMOKE_TIMELINE_PASSED') || !log.contains('XIRC_SMOKE_WORLD_SCRUB_PASSED')) throw new GradleException('Timeline smoke check failed')

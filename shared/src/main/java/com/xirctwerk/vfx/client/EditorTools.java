@@ -61,10 +61,10 @@ final class EditorTools {
         ImGui.textWrapped("Ctrl-click layers to select several. Relative edits preserve curve keys, easing and random ranges.");
         if(EditorHints.button("Select all"))f.select.accept(Authoring.ids(f.project.json()));ImGui.sameLine();if(EditorHints.button("Isolate / restore"))f.command.accept("isolate");
         choose("Property",Authoring.NUMERIC,field,value->field=value);
-        ImGui.dragFloat("Add",add,.01f,-36000,36000,"%.3f");EditorHints.tip("Add this amount to every scalar, range endpoint or curve value of the selected property.");EditorHints.limits(-36000,36000);
-        ImGui.dragFloat("Multiply",multiply,.01f,-100,100,"%.3f");EditorHints.limits(-100,100);
+        ImGui.sliderFloat("Add",add,-36000,36000,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp);EditorHints.tip("Add this amount to every scalar, range endpoint or curve value of the selected property.");EditorHints.limits(-36000,36000);
+        ImGui.sliderFloat("Multiply",multiply,-100,100,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp);EditorHints.limits(-100,100);
         if(EditorHints.button("Apply relative edit"))edit(f,o->Authoring.relative(o,f.selected,field,add[0],multiply[0]));relativeX=(ImGui.getItemRectMinX()+ImGui.getItemRectMaxX())/2;relativeY=(ImGui.getItemRectMinY()+ImGui.getItemRectMaxY())/2;
-        ImGui.separator();ImGui.dragFloat3("Move by (blocks)",translate,.05f,-128,128);EditorHints.limits(-128,128);
+        ImGui.separator();ImGui.sliderFloat3("Move by (blocks)",translate,-128,128,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp);EditorHints.limits(-128,128);
         if(EditorHints.button("Move selection"))edit(f,o->Authoring.translate(o,f.selected,translate[0],translate[1],translate[2]));EditorHints.tip("Translate selected hierarchy roots once; selected descendants inherit the movement.");
         ImGui.inputText("Folder",folder);if(EditorHints.button("Assign folder"))edit(f,o->Authoring.set(o,f.selected,"folder",new JsonPrimitive(folder.get())));
         if(EditorHints.button("Duplicate selected"))f.command.accept("duplicate");ImGui.sameLine();if(EditorHints.button("Delete selected"))f.command.accept("delete");
@@ -83,7 +83,7 @@ final class EditorTools {
         var points=Keyframes.keys(layer,track);keys.removeIf(i->i>=points.size());
         if(EditorHints.button("Select all keys")){keys.clear();for(int i=0;i<points.size();i++)keys.add(i);}
         for(int i=0;i<points.size();i++){ImGui.pushID(i);var enabled=new ImBoolean(keys.contains(i));if(ImGui.checkbox("Key "+(i+1)+" · "+points.get(i).getAsJsonObject().get("time").getAsString(),enabled)){if(enabled.get())keys.add(i);else keys.remove(i);}ImGui.popID();}
-        ImGui.dragFloat("Shift lifetime",shift,.005f,-1,1);EditorHints.limits(-1,1);ImGui.dragFloat("Stretch",stretch,.01f,.01f,10);EditorHints.limits(.01,10);
+        ImGui.sliderFloat("Shift lifetime",shift,-1,1,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp);EditorHints.limits(-1,1);ImGui.sliderFloat("Stretch",stretch,.01f,10,"%.3f",imgui.flag.ImGuiSliderFlags.AlwaysClamp);EditorHints.limits(.01,10);
         if(EditorHints.button("Retime selected keys"))edit(f,o->Keyframes.retime(Authoring.layer(o,layer.get("id").getAsString()),track,keys,shift[0],stretch[0]));
         ImGui.separator();ImGui.inputText("Marker name",markerName);
         if(EditorHints.button("Mark current second"))edit(f,o->{if(!o.has("markers"))o.add("markers",new JsonArray());var marker=new JsonObject();marker.addProperty("name",markerName.get());marker.addProperty("time",Math.min(631,f.simulation.time()));o.getAsJsonArray("markers").add(marker);});

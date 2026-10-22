@@ -1,0 +1,97 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation": {
+            "enum": [
+              "dissolve",
+              "outline",
+              "fresnel",
+              "distortion",
+              "scroll",
+              "gradient",
+              "chromatic",
+              "pixelate"
+            ]
+          },
+          "amount": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0.5
+          },
+          "speed": {
+            "type": "number",
+            "minimum": -10,
+            "maximum": 10,
+            "default": 1
+          },
+          "scale": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 64,
+            "default": 8
+          },
+          "color": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "keys": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "time": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "value": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [
+                "time",
+                "value"
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 64
+          }
+        },
+        "required": [
+          "operation"
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 16
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "nodes"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Xirc's VFX image material v1"
+}
