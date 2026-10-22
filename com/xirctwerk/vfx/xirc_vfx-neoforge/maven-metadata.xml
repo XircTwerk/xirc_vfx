@@ -3,11 +3,12 @@
   <groupId>com.xirctwerk.vfx</groupId>
   <artifactId>xirc_vfx-neoforge</artifactId>
   <versioning>
-    <latest>0.2.0</latest>
-    <release>0.2.0</release>
+    <latest>0.3.0</latest>
+    <release>0.3.0</release>
     <versions>
       <version>0.2.0</version>
+      <version>0.3.0</version>
     </versions>
-    <lastUpdated>20261020033703</lastUpdated>
+    <lastUpdated>20261022010905</lastUpdated>
   </versioning>
 </metadata>
